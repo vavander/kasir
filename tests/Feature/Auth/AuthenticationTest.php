@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
@@ -17,17 +19,30 @@ class AuthenticationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_users_can_authenticate_using_the_login_screen(): void
+    public function test_owner_can_authenticate_and_redirect_to_dashboard(): void
     {
-        $user = User::factory()->create();
+        $owner = User::factory()->owner()->create();
 
         $response = $this->post('/login', [
-            'email' => $user->email,
+            'email' => $owner->email,
             'password' => 'password',
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        $response->assertRedirect(route('owner.dashboard', absolute: false));
+    }
+
+    public function test_cashier_can_authenticate_and_redirect_to_pos(): void
+    {
+        $cashier = User::factory()->cashier()->create();
+
+        $response = $this->post('/login', [
+            'email' => $cashier->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect(route('cashier.pos', absolute: false));
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
@@ -44,11 +59,11 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_logout(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->owner()->create();
 
         $response = $this->actingAs($user)->post('/logout');
 
         $this->assertGuest();
-        $response->assertRedirect('/');
+        $response->assertRedirect(route('login'));
     }
 }
