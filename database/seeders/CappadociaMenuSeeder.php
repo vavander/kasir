@@ -11,42 +11,26 @@ class CappadociaMenuSeeder extends Seeder
 {
     /**
      * Menu list transcribed from the Kedai Cappadocia board.
-     * Prices are in rupiah; HPP defaults to 50% of selling price (owner edits later).
-     * For Ice/Hot items the Ice price is used.
+     * Prices in rupiah; HPP defaults to 50% of selling price (owner edits later).
+     * Drinks served both cold & hot are split: cold -> "Ice" category,
+     * a separate "(Hot)" entry -> "Hot" category.
      */
     public function run(): void
     {
-        $menus = [
-            // category => [ [name, selling_price], ... ]
+        // Single-temperature items keep their type category. [name, price]
+        $single = [
             'Espresso Based' => [
                 ['Americano Orange', 18000],
                 ['Americano Nanas', 18000],
                 ['Americano', 16000],
                 ['Hazelnut', 22000],
                 ['Butterscotch', 22000],
-                ['Coffe Latte', 18000],
                 ['Pandan', 22000],
-                ['Nara', 20000],
                 ['Alice', 18000],
                 ['Kavo', 22000],
-                ['Kopi Susu', 20000],
-            ],
-            'Non-Coffee' => [
-                ['Milo Dino', 19000],
-                ['Red Velvet', 19000],
-                ['Taro', 19000],
-                ['Coklat', 19000],
-                ['Hazelnut (Non-Coffee)', 19000],
-                ['Avocado', 19000],
-                ['Matcha', 19000],
-                ['Oreo', 19000],
-                ['Choco Cheese', 19000],
             ],
             'Tea' => [
                 ['Teh Tarik Brown Sugar', 16000],
-                ['Teh Susu', 13000],
-                ['Teh', 10000],
-                ['Lemon Tea', 10000],
                 ['Es Teh Leci', 14000],
             ],
             'Squash' => [
@@ -70,18 +54,47 @@ class CappadociaMenuSeeder extends Seeder
             ],
         ];
 
-        foreach ($menus as $category => $items) {
+        // Drinks with both Ice & Hot. [name, ice price, hot price]
+        $dual = [
+            ['Coffe Latte', 18000, 16000],
+            ['Nara', 20000, 16000],
+            ['Kopi Susu', 20000, 15000],
+            ['Milo Dino', 19000, 15000],
+            ['Red Velvet', 19000, 15000],
+            ['Taro', 19000, 15000],
+            ['Coklat', 19000, 15000],
+            ['Hazelnut (Non-Coffee)', 19000, 15000],
+            ['Avocado', 19000, 15000],
+            ['Matcha', 19000, 15000],
+            ['Oreo', 19000, 15000],
+            ['Choco Cheese', 19000, 15000],
+            ['Teh Susu', 13000, 13000],
+            ['Teh', 10000, 10000],
+            ['Lemon Tea', 10000, 10000],
+        ];
+
+        foreach ($single as $category => $items) {
             foreach ($items as [$name, $price]) {
-                Menu::updateOrCreate(
-                    ['name' => $name],
-                    [
-                        'category' => $category,
-                        'selling_price' => $price,
-                        'hpp' => (int) round($price * 0.5),
-                        'is_active' => true,
-                    ],
-                );
+                $this->upsert($name, $category, $price);
             }
         }
+
+        foreach ($dual as [$name, $ice, $hot]) {
+            $this->upsert($name, 'Ice', $ice);
+            $this->upsert($name.' (Hot)', 'Hot', $hot);
+        }
+    }
+
+    private function upsert(string $name, string $category, int $price): void
+    {
+        Menu::updateOrCreate(
+            ['name' => $name],
+            [
+                'category' => $category,
+                'selling_price' => $price,
+                'hpp' => (int) round($price * 0.5),
+                'is_active' => true,
+            ],
+        );
     }
 }
