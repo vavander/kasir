@@ -3,9 +3,11 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Cashier\PosController;
-use App\Http\Controllers\Cashier\TransactionController;
+use App\Http\Controllers\Cashier\TransactionController as CashierTransactionController;
+use App\Http\Controllers\Cashier\TransactionHistoryController;
 use App\Http\Controllers\Owner\DashboardController;
 use App\Http\Controllers\Owner\MenuController;
+use App\Http\Controllers\Owner\TransactionController as OwnerTransactionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,17 +29,27 @@ Route::middleware(['auth', 'active', 'owner'])->group(function () {
     ]);
     Route::patch('menus/{menu}/toggle-status', [MenuController::class, 'toggleStatus'])
         ->name('owner.menus.toggle-status');
+
+    Route::get('/transactions', [OwnerTransactionController::class, 'index'])
+        ->name('owner.transactions.index');
+    Route::get('/transactions/{id}', [OwnerTransactionController::class, 'show'])
+        ->name('owner.transactions.show');
 });
 
 // Cashier routes
 Route::middleware(['auth', 'active', 'cashier'])->group(function () {
     Route::get('/pos', [PosController::class, 'index'])->name('cashier.pos');
     Route::post('/pos/checkout', [PosController::class, 'checkout'])->name('cashier.pos.checkout');
+
+    Route::get('/cashier/transactions', [TransactionHistoryController::class, 'index'])
+        ->name('cashier.transactions.index');
+    Route::get('/cashier/transactions/{id}', [TransactionHistoryController::class, 'show'])
+        ->name('cashier.transactions.show');
 });
 
 // Shared authenticated routes (owner + cashier)
 Route::middleware(['auth', 'active'])->group(function () {
-    Route::get('/transactions/{transaction}/receipt', [TransactionController::class, 'receipt'])
+    Route::get('/transactions/{transaction}/receipt', [CashierTransactionController::class, 'receipt'])
         ->name('transactions.receipt');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
