@@ -170,7 +170,7 @@ export default function OwnerReportIndex({ report, filters, range }: Props) {
                     <KpiCard title="Omzet" value={summary.omzet} icon={Coins} colorClass="text-emerald-600" bgClass="bg-emerald-100 dark:bg-emerald-950" />
                     <KpiCard title="HPP" value={summary.hpp} icon={TrendingDown} colorClass="text-amber-600" bgClass="bg-amber-100 dark:bg-amber-950" />
                     <KpiCard title="Pengeluaran" value={summary.pengeluaran} icon={Wallet} colorClass="text-rose-600" bgClass="bg-rose-100 dark:bg-rose-950" />
-                    <KpiCard title="Laba Bersih" value={summary.laba_bersih} icon={TrendingUp} colorClass="text-indigo-600" bgClass="bg-indigo-100 dark:bg-indigo-950" isNegativeAllowed />
+                    <KpiCard title="Laba Bersih" value={summary.laba_bersih} icon={TrendingUp} colorClass="text-orange-600" bgClass="bg-orange-100 dark:bg-orange-950" isNegativeAllowed />
                 </div>
 
                 {/* Payment status breakdown */}

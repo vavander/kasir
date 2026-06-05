@@ -167,7 +167,7 @@ export default function MenuForm({ initialData, submitRoute, mode }: MenuFormPro
                     <div className="space-y-1.5">
                         <Label>Foto Menu</Label>
                         <div
-                            className="relative border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-4 cursor-pointer hover:border-indigo-400 dark:hover:border-indigo-500 transition-colors"
+                            className="relative border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-4 cursor-pointer hover:border-orange-400 dark:hover:border-orange-500 transition-colors"
                             onClick={() => fileInputRef.current?.click()}
                         >
                             {imagePreview ? (

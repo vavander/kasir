@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { BarChart3, Clock, HandCoins, Receipt, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
@@ -9,6 +9,7 @@ import ExpenseChart from '@/Components/dashboard/ExpenseChart';
 import TopMenuList from '@/Components/dashboard/TopMenuList';
 import RecentActivity from '@/Components/dashboard/RecentActivity';
 import { formatRupiah } from '@/lib/formatters';
+import { PageProps } from '@/types';
 
 interface Summary {
     omzet: number;
@@ -87,8 +88,8 @@ const kpiConfig = [
         key: 'laba_bersih' as const,
         title: 'Laba Bersih Hari Ini',
         icon: BarChart3,
-        colorClass: 'text-indigo-600 dark:text-indigo-400',
-        bgClass: 'bg-indigo-50 dark:bg-indigo-950',
+        colorClass: 'text-orange-600 dark:text-orange-400',
+        bgClass: 'bg-orange-50 dark:bg-orange-950',
         isNegativeAllowed: true,
     },
 ];
@@ -103,21 +104,21 @@ export default function Dashboard({
     recentExpenses,
 }: DashboardProps) {
     const today = format(new Date(), 'EEEE, d MMMM yyyy', { locale: id });
+    const { auth } = usePage<PageProps>().props;
 
     return (
         <OwnerLayout>
             <Head title="Dashboard" />
 
             <div className="p-6 space-y-6">
-                {/* Header */}
-                <div className="flex items-start justify-between">
-                    <div>
-                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                            Dashboard
-                        </h1>
-                        <p className="text-sm text-muted-foreground mt-0.5 capitalize">
-                            {today}
-                        </p>
+                {/* Hero banner */}
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 via-orange-500 to-amber-600 px-6 py-7 text-white">
+                    <div className="absolute -top-10 -right-10 w-44 h-44 bg-white/10 rounded-full" />
+                    <div className="absolute -bottom-16 right-24 w-40 h-40 bg-white/5 rounded-full" />
+                    <div className="relative">
+                        <p className="text-sm text-white/80 capitalize">{today}</p>
+                        <h1 className="text-2xl sm:text-3xl font-bold mt-1">Halo, {auth.user.name} 👋</h1>
+                        <p className="text-white/90 mt-1 text-sm">Ringkasan bisnis Anda hari ini</p>
                     </div>
                 </div>
 

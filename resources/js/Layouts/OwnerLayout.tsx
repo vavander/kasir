@@ -52,7 +52,7 @@ export default function OwnerLayout({ children }: PropsWithChildren) {
                     <MenuIcon className="w-5 h-5" />
                 </button>
                 <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 bg-indigo-600 rounded-lg flex items-center justify-center">
+                    <div className="w-7 h-7 bg-orange-600 rounded-lg flex items-center justify-center">
                         <UtensilsCrossed className="w-3.5 h-3.5 text-white" />
                     </div>
                     <span className="font-semibold text-gray-900 dark:text-white text-sm">Restaurant POS</span>
@@ -68,22 +68,22 @@ export default function OwnerLayout({ children }: PropsWithChildren) {
             {/* Sidebar */}
             <aside
                 className={cn(
-                    'w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col fixed inset-y-0 z-50 transition-transform duration-200',
+                    'w-64 bg-slate-900 border-r border-slate-800 flex flex-col fixed inset-y-0 z-50 transition-transform duration-200',
                     'lg:translate-x-0',
                     sidebarOpen ? 'translate-x-0' : '-translate-x-full',
                 )}
             >
                 {/* Logo */}
-                <div className="h-16 flex items-center gap-3 px-6 border-b border-gray-200 dark:border-gray-800">
-                    <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center shrink-0">
+                <div className="h-16 flex items-center gap-3 px-6 border-b border-slate-800">
+                    <div className="w-8 h-8 bg-orange-500 rounded-xl flex items-center justify-center shrink-0">
                         <UtensilsCrossed className="w-4 h-4 text-white" />
                     </div>
-                    <span className="font-semibold text-gray-900 dark:text-white text-sm truncate flex-1">
+                    <span className="font-semibold text-white text-sm truncate flex-1">
                         Restaurant POS
                     </span>
                     <button
                         onClick={() => setSidebarOpen(false)}
-                        className="lg:hidden p-1.5 -mr-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+                        className="lg:hidden p-1.5 -mr-2 rounded-lg text-slate-400 hover:bg-slate-800"
                         aria-label="Tutup menu"
                     >
                         <X className="w-4 h-4" />
@@ -91,7 +91,7 @@ export default function OwnerLayout({ children }: PropsWithChildren) {
                 </div>
 
                 {/* Navigation */}
-                <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+                <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
                     {navItems.map((item) => {
                         const isActive = currentRoute === item.href;
                         const Icon = item.icon;
@@ -109,13 +109,13 @@ export default function OwnerLayout({ children }: PropsWithChildren) {
                                 href={href}
                                 onClick={() => setSidebarOpen(false)}
                                 className={cn(
-                                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                                    'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors',
                                     isActive
-                                        ? 'bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300'
-                                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white',
+                                        ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
+                                        : 'text-slate-300 hover:bg-slate-800 hover:text-white',
                                 )}
                             >
-                                <Icon className={cn('w-4 h-4 shrink-0', isActive ? 'text-indigo-600 dark:text-indigo-400' : '')} />
+                                <Icon className="w-4 h-4 shrink-0" />
                                 {item.label}
                             </Link>
                         );
@@ -123,31 +123,31 @@ export default function OwnerLayout({ children }: PropsWithChildren) {
                 </nav>
 
                 {/* Footer: theme + user */}
-                <div className="p-3 border-t border-gray-200 dark:border-gray-800 space-y-3">
+                <div className="p-3 border-t border-slate-800 space-y-3">
                     <div className="flex items-center justify-between px-1">
-                        <span className="text-xs text-muted-foreground">Tampilan</span>
+                        <span className="text-xs text-slate-400">Tampilan</span>
                         <ThemeToggle />
                     </div>
 
                     <div className="relative">
                         <button
                             onClick={() => setUserMenuOpen(!userMenuOpen)}
-                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-800 transition-colors"
                         >
-                            <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center shrink-0 overflow-hidden">
+                            <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center shrink-0 overflow-hidden">
                                 {auth.user.avatar_url ? (
                                     <img src={auth.user.avatar_url} alt={auth.user.name} className="w-full h-full object-cover" />
                                 ) : (
-                                    <User className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                                    <User className="w-4 h-4 text-orange-400" />
                                 )}
                             </div>
                             <div className="flex-1 text-left min-w-0">
-                                <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                <p className="text-sm font-medium text-white truncate">
                                     {auth.user.name}
                                 </p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">Owner</p>
+                                <p className="text-xs text-slate-400 truncate">Owner</p>
                             </div>
-                            <ChevronDown className={cn('w-4 h-4 text-gray-400 shrink-0 transition-transform', userMenuOpen ? 'rotate-180' : '')} />
+                            <ChevronDown className={cn('w-4 h-4 text-slate-400 shrink-0 transition-transform', userMenuOpen ? 'rotate-180' : '')} />
                         </button>
 
                         {userMenuOpen && (

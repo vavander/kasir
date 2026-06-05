@@ -92,11 +92,11 @@ export default function CashierIndex({ cashiers, filters }: Props) {
                                         <tr key={c.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
                                             <td className="px-4 py-3">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="w-9 h-9 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center overflow-hidden shrink-0">
+                                                    <div className="w-9 h-9 rounded-full bg-orange-100 dark:bg-orange-900 flex items-center justify-center overflow-hidden shrink-0">
                                                         {c.avatar_url ? (
                                                             <img src={c.avatar_url} alt={c.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                                                         ) : (
-                                                            <UserRound className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                                                            <UserRound className="w-4 h-4 text-orange-600 dark:text-orange-400" />
                                                         )}
                                                     </div>
                                                     <div className="min-w-0">

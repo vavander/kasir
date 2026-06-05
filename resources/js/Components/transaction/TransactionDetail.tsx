@@ -129,7 +129,7 @@ export default function TransactionDetail({ transaction, backRoute, showHpp = fa
                         </div>
                         <div className="flex justify-between font-bold text-base">
                             <span className="text-gray-900 dark:text-white">Total</span>
-                            <span className="text-indigo-600 dark:text-indigo-400">
+                            <span className="text-orange-600 dark:text-orange-400">
                                 {formatRupiah(transaction.total)}
                             </span>
                         </div>

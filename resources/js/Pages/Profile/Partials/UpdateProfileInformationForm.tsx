@@ -57,11 +57,11 @@ export default function UpdateProfileInformationForm() {
             <form onSubmit={submit} className="space-y-6">
                 {/* Avatar */}
                 <div className="flex items-center gap-5">
-                    <div className="w-20 h-20 rounded-full overflow-hidden bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center shrink-0 border border-gray-200 dark:border-gray-800">
+                    <div className="w-20 h-20 rounded-full overflow-hidden bg-orange-100 dark:bg-orange-900 flex items-center justify-center shrink-0 border border-gray-200 dark:border-gray-800">
                         {shownAvatar ? (
                             <img src={shownAvatar} alt={user.name} className="w-full h-full object-cover" />
                         ) : (
-                            <UserRound className="w-9 h-9 text-indigo-500 dark:text-indigo-300" />
+                            <UserRound className="w-9 h-9 text-orange-500 dark:text-orange-300" />
                         )}
                     </div>
                     <div className="space-y-2">

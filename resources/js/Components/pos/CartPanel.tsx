@@ -35,12 +35,12 @@ export default function CartPanel({
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-800">
                 <div className="flex items-center gap-2">
-                    <ShoppingCart className="w-4 h-4 text-indigo-600" />
+                    <ShoppingCart className="w-4 h-4 text-orange-600" />
                     <h2 className="font-semibold text-gray-900 dark:text-white text-sm">
                         Keranjang
                     </h2>
                     {totalItems > 0 && (
-                        <span className="w-5 h-5 bg-indigo-600 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                        <span className="w-5 h-5 bg-orange-600 text-white text-xs rounded-full flex items-center justify-center font-bold">
                             {totalItems}
                         </span>
                     )}
@@ -121,7 +121,7 @@ export default function CartPanel({
                     </div>
                     <div className="flex justify-between">
                         <span className="text-base font-bold text-gray-900 dark:text-white">Total</span>
-                        <span className="text-base font-bold text-indigo-600 dark:text-indigo-400">
+                        <span className="text-base font-bold text-orange-600 dark:text-orange-400">
                             {formatRupiah(subtotal)}
                         </span>
                     </div>

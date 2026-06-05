@@ -37,13 +37,13 @@ export default function CashierLayout({ children }: PropsWithChildren) {
         <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
             <Toaster />
             {/* Top Navbar */}
-            <header className="h-14 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex items-center px-4 gap-4 fixed top-0 inset-x-0 z-30">
+            <header className="h-14 bg-slate-900 border-b border-slate-800 flex items-center px-4 gap-4 fixed top-0 inset-x-0 z-30">
                 {/* Logo */}
                 <div className="flex items-center gap-2.5 mr-4">
-                    <div className="w-7 h-7 bg-indigo-600 rounded-lg flex items-center justify-center shrink-0">
+                    <div className="w-7 h-7 bg-orange-500 rounded-xl flex items-center justify-center shrink-0">
                         <UtensilsCrossed className="w-3.5 h-3.5 text-white" />
                     </div>
-                    <span className="font-semibold text-gray-900 dark:text-white text-sm hidden sm:block">
+                    <span className="font-semibold text-white text-sm hidden sm:block">
                         Restaurant POS
                     </span>
                 </div>
@@ -66,10 +66,10 @@ export default function CashierLayout({ children }: PropsWithChildren) {
                                 key={item.href}
                                 href={href}
                                 className={cn(
-                                    'flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors',
+                                    'flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-medium transition-colors',
                                     isActive
-                                        ? 'bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300'
-                                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white',
+                                        ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
+                                        : 'text-slate-300 hover:bg-slate-800 hover:text-white',
                                 )}
                             >
                                 <Icon className="w-4 h-4 shrink-0" />
@@ -85,16 +85,16 @@ export default function CashierLayout({ children }: PropsWithChildren) {
                 <div className="relative">
                     <button
                         onClick={() => setUserMenuOpen(!userMenuOpen)}
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-xl hover:bg-slate-800 transition-colors"
                     >
-                        <div className="w-7 h-7 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center overflow-hidden">
+                        <div className="w-7 h-7 bg-orange-500/20 rounded-full flex items-center justify-center overflow-hidden">
                             {auth.user.avatar_url ? (
                                 <img src={auth.user.avatar_url} alt={auth.user.name} className="w-full h-full object-cover" />
                             ) : (
-                                <User className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                                <User className="w-3.5 h-3.5 text-orange-400" />
                             )}
                         </div>
-                        <span className="text-sm font-medium text-gray-900 dark:text-white hidden sm:block">
+                        <span className="text-sm font-medium text-white hidden sm:block">
                             {auth.user.name}
                         </span>
                     </button>

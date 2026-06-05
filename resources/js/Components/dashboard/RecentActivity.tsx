@@ -39,7 +39,7 @@ export default function RecentActivity({ transactions, expenses }: RecentActivit
             <Card>
                 <CardHeader className="pb-2">
                     <CardTitle className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                        <CreditCard className="w-4 h-4 text-indigo-500" />
+                        <CreditCard className="w-4 h-4 text-orange-500" />
                         Transaksi Terbaru
                     </CardTitle>
                 </CardHeader>

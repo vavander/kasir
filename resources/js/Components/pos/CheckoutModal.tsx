@@ -76,9 +76,9 @@ export default function CheckoutModal({ items, total, openTabs = [], onConfirm, 
             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={!processing ? onCancel : undefined} />
 
             <div className="relative w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
-                <div className="bg-indigo-600 px-6 py-4">
+                <div className="bg-orange-600 px-6 py-4">
                     <h2 className="text-white font-semibold text-lg">Konfirmasi Pesanan</h2>
-                    <p className="text-indigo-200 text-sm mt-0.5">{items.reduce((s, i) => s + i.qty, 0)} item</p>
+                    <p className="text-orange-200 text-sm mt-0.5">{items.reduce((s, i) => s + i.qty, 0)} item</p>
                 </div>
 
                 <div className="p-6 space-y-5">
@@ -139,11 +139,11 @@ export default function CheckoutModal({ items, total, openTabs = [], onConfirm, 
                             onClick={() => setPayLater(false)}
                             className={cn(
                                 'flex items-center gap-2 rounded-xl border-2 p-3 transition-all',
-                                !payLater ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950' : 'border-gray-200 dark:border-gray-700',
+                                !payLater ? 'border-orange-500 bg-orange-50 dark:bg-orange-950' : 'border-gray-200 dark:border-gray-700',
                             )}
                         >
-                            <Wallet className={cn('w-4 h-4', !payLater ? 'text-indigo-600' : 'text-gray-400')} />
-                            <span className={cn('text-sm font-semibold', !payLater ? 'text-indigo-700 dark:text-indigo-300' : 'text-gray-700 dark:text-gray-300')}>Bayar Sekarang</span>
+                            <Wallet className={cn('w-4 h-4', !payLater ? 'text-orange-600' : 'text-gray-400')} />
+                            <span className={cn('text-sm font-semibold', !payLater ? 'text-orange-700 dark:text-orange-300' : 'text-gray-700 dark:text-gray-300')}>Bayar Sekarang</span>
                         </button>
                         <button
                             type="button"
@@ -171,10 +171,10 @@ export default function CheckoutModal({ items, total, openTabs = [], onConfirm, 
                                             onClick={() => setPaymentMethod(pm.value)}
                                             className={cn(
                                                 'flex flex-col items-center gap-1 rounded-xl border-2 p-3 transition-all text-center',
-                                                paymentMethod === pm.value ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300',
+                                                paymentMethod === pm.value ? 'border-orange-500 bg-orange-50 dark:bg-orange-950' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300',
                                             )}
                                         >
-                                            <span className={cn('text-sm font-semibold', paymentMethod === pm.value ? 'text-indigo-700 dark:text-indigo-300' : 'text-gray-900 dark:text-white')}>{pm.label}</span>
+                                            <span className={cn('text-sm font-semibold', paymentMethod === pm.value ? 'text-orange-700 dark:text-orange-300' : 'text-gray-900 dark:text-white')}>{pm.label}</span>
                                             <span className="text-[10px] text-muted-foreground leading-tight">{pm.desc}</span>
                                         </button>
                                     ))}
@@ -200,7 +200,7 @@ export default function CheckoutModal({ items, total, openTabs = [], onConfirm, 
                                             .filter((v, i, arr) => arr.indexOf(v) === i && v >= total)
                                             .slice(0, 4)
                                             .map((amount) => (
-                                                <button key={amount} type="button" onClick={() => setPaidAmount(amount.toLocaleString('id-ID'))} className="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-gray-700 dark:text-gray-300 transition-colors">
+                                                <button key={amount} type="button" onClick={() => setPaidAmount(amount.toLocaleString('id-ID'))} className="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-orange-100 dark:hover:bg-orange-900 text-gray-700 dark:text-gray-300 transition-colors">
                                                     {formatRupiah(amount)}
                                                 </button>
                                             ))}

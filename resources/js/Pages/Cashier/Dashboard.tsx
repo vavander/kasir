@@ -31,7 +31,7 @@ export default function CashierDashboard({ summary, recentTransactions }: Props)
     const today = format(new Date(), 'EEEE, d MMMM yyyy', { locale: id });
 
     const cards = [
-        { label: 'Transaksi Hari Ini', value: String(summary.transactions_today), icon: Receipt, color: 'text-indigo-600', bg: 'bg-indigo-50 dark:bg-indigo-950' },
+        { label: 'Transaksi Hari Ini', value: String(summary.transactions_today), icon: Receipt, color: 'text-orange-600', bg: 'bg-orange-50 dark:bg-orange-950' },
         { label: 'Pendapatan Hari Ini', value: formatRupiah(summary.revenue_today), icon: Coins, color: 'text-emerald-600', bg: 'bg-emerald-50 dark:bg-emerald-950' },
         { label: 'Pengeluaran Hari Ini', value: formatRupiah(summary.expenses_today), icon: Wallet, color: 'text-rose-600', bg: 'bg-rose-50 dark:bg-rose-950' },
     ];
@@ -47,9 +47,18 @@ export default function CashierDashboard({ summary, recentTransactions }: Props)
             <Head title="Beranda" />
 
             <div className="p-6 space-y-6">
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Halo, {auth.user.name}</h1>
-                    <p className="text-sm text-muted-foreground mt-0.5 capitalize">{today}</p>
+                {/* Hero banner */}
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 via-orange-500 to-amber-600 px-6 py-7 text-white">
+                    <div className="absolute -top-10 -right-10 w-44 h-44 bg-white/10 rounded-full" />
+                    <div className="absolute -bottom-16 right-24 w-40 h-40 bg-white/5 rounded-full" />
+                    <div className="relative">
+                        <p className="text-sm text-white/80 capitalize">{today}</p>
+                        <h1 className="text-2xl sm:text-3xl font-bold mt-1">Halo, {auth.user.name} 👋</h1>
+                        <p className="text-white/90 mt-1 text-sm">Siap melayani pelanggan hari ini?</p>
+                        <Link href={route('cashier.pos')} className="inline-flex items-center gap-2 mt-4 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-orange-600 hover:bg-orange-50 transition-colors">
+                            <ShoppingCart className="w-4 h-4" /> Mulai Transaksi
+                        </Link>
+                    </div>
                 </div>
 
                 {/* Summary cards */}
@@ -82,10 +91,10 @@ export default function CashierDashboard({ summary, recentTransactions }: Props)
                             <Link
                                 key={a.label}
                                 href={a.href}
-                                className="flex items-center gap-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 py-3.5 hover:border-indigo-400 dark:hover:border-indigo-600 hover:shadow-sm transition-all"
+                                className="flex items-center gap-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 py-3.5 hover:border-orange-400 dark:hover:border-orange-600 hover:shadow-sm transition-all"
                             >
-                                <div className="w-9 h-9 rounded-lg bg-indigo-50 dark:bg-indigo-950 flex items-center justify-center">
-                                    <Icon className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                                <div className="w-9 h-9 rounded-lg bg-orange-50 dark:bg-orange-950 flex items-center justify-center">
+                                    <Icon className="w-4 h-4 text-orange-600 dark:text-orange-400" />
                                 </div>
                                 <span className="text-sm font-medium text-gray-900 dark:text-white">{a.label}</span>
                             </Link>
@@ -97,7 +106,7 @@ export default function CashierDashboard({ summary, recentTransactions }: Props)
                 <div className="rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden bg-white dark:bg-gray-900">
                     <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
                         <h2 className="text-sm font-semibold text-gray-900 dark:text-white">Transaksi Terbaru</h2>
-                        <Link href={route('cashier.transactions.index')} className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline">
+                        <Link href={route('cashier.transactions.index')} className="text-xs text-orange-600 dark:text-orange-400 hover:underline">
                             Lihat semua
                         </Link>
                     </div>

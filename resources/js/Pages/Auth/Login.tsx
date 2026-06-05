@@ -33,7 +33,7 @@ export default function Login({
 
             <div className="min-h-screen flex">
                 {/* Left — Branding */}
-                <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-indigo-600 via-indigo-700 to-indigo-900 flex-col items-center justify-center p-12 overflow-hidden">
+                <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-orange-600 via-orange-700 to-orange-900 flex-col items-center justify-center p-12 overflow-hidden">
                     {/* Background decoration */}
                     <div className="absolute inset-0 overflow-hidden">
                         <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full" />
@@ -49,7 +49,7 @@ export default function Login({
                         <h1 className="text-4xl font-bold text-white mb-3 tracking-tight">
                             Restaurant POS
                         </h1>
-                        <p className="text-indigo-200 text-lg mb-8 max-w-xs">
+                        <p className="text-orange-200 text-lg mb-8 max-w-xs">
                             Kelola restoran Anda dengan lebih mudah dan efisien
                         </p>
 
@@ -64,7 +64,7 @@ export default function Login({
                                     className="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/10"
                                 >
                                     <p className="text-white font-semibold text-sm">{item.label}</p>
-                                    <p className="text-indigo-200 text-xs mt-0.5">{item.desc}</p>
+                                    <p className="text-orange-200 text-xs mt-0.5">{item.desc}</p>
                                 </div>
                             ))}
                         </div>
@@ -76,7 +76,7 @@ export default function Login({
                     <div className="w-full max-w-md">
                         {/* Mobile logo */}
                         <div className="lg:hidden flex items-center gap-3 mb-8">
-                            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center">
+                            <div className="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center">
                                 <UtensilsCrossed className="w-5 h-5 text-white" />
                             </div>
                             <span className="text-xl font-bold text-gray-900 dark:text-white">
@@ -156,7 +156,7 @@ export default function Login({
                                         name="remember"
                                         checked={data.remember}
                                         onChange={(e) => setData('remember', e.target.checked as false)}
-                                        className="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                                        className="w-4 h-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500 cursor-pointer"
                                     />
                                     <span className="text-sm text-gray-600 dark:text-gray-400">
                                         Ingat saya
@@ -166,7 +166,7 @@ export default function Login({
                                 {canResetPassword && (
                                     <a
                                         href={route('password.request')}
-                                        className="text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium"
+                                        className="text-sm text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 font-medium"
                                     >
                                         Lupa password?
                                     </a>
@@ -176,7 +176,7 @@ export default function Login({
                             <Button
                                 type="submit"
                                 disabled={processing}
-                                className="w-full h-11 bg-indigo-600 hover:bg-indigo-700 text-white font-medium"
+                                className="w-full h-11 bg-orange-600 hover:bg-orange-700 text-white font-medium"
                             >
                                 {processing ? (
                                     <>

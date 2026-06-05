@@ -165,7 +165,7 @@ export default function Pos({ menus, categories, openTabs }: PosProps) {
                                         className={cn(
                                             'shrink-0 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors',
                                             activeCategory === cat
-                                                ? 'bg-indigo-600 text-white'
+                                                ? 'bg-orange-600 text-white'
                                                 : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700',
                                         )}
                                     >

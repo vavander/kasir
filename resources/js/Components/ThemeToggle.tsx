@@ -43,7 +43,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
                     className={cn(
                         'flex items-center justify-center w-7 h-7 rounded-md transition-colors',
                         theme === value
-                            ? 'bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-300'
+                            ? 'bg-orange-50 dark:bg-orange-950 text-orange-600 dark:text-orange-300'
                             : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800',
                     )}
                 >

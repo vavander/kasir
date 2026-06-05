@@ -60,9 +60,9 @@ export default function SettlePaymentModal({ transaction, settleRoute, onClose }
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={!processing ? onClose : undefined} />
             <div className="relative w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden">
-                <div className="bg-indigo-600 px-6 py-4">
+                <div className="bg-orange-600 px-6 py-4">
                     <h2 className="text-white font-semibold text-lg">Selesaikan Pembayaran</h2>
-                    <p className="text-indigo-200 text-sm mt-0.5">{transaction.invoice_number} — {transaction.customer_name ?? '-'}</p>
+                    <p className="text-orange-200 text-sm mt-0.5">{transaction.invoice_number} — {transaction.customer_name ?? '-'}</p>
                 </div>
 
                 <form onSubmit={submit} className="p-6 space-y-5">
@@ -81,7 +81,7 @@ export default function SettlePaymentModal({ transaction, settleRoute, onClose }
                                     onClick={() => setMethod(m.value)}
                                     className={cn(
                                         'rounded-xl border-2 p-3 text-sm font-semibold transition-all',
-                                        method === m.value ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300' : 'border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white',
+                                        method === m.value ? 'border-orange-500 bg-orange-50 dark:bg-orange-950 text-orange-700 dark:text-orange-300' : 'border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white',
                                     )}
                                 >
                                     {m.label}

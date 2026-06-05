@@ -45,11 +45,11 @@ export default function CashierShow({ cashier, stats }: Props) {
                 </div>
 
                 <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 flex items-center gap-4 flex-wrap">
-                    <div className="w-16 h-16 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center overflow-hidden shrink-0">
+                    <div className="w-16 h-16 rounded-full bg-orange-100 dark:bg-orange-900 flex items-center justify-center overflow-hidden shrink-0">
                         {cashier.avatar_url ? (
                             <img src={cashier.avatar_url} alt={cashier.name} className="w-full h-full object-cover" />
                         ) : (
-                            <UserRound className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
+                            <UserRound className="w-7 h-7 text-orange-600 dark:text-orange-400" />
                         )}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -78,7 +78,7 @@ export default function CashierShow({ cashier, stats }: Props) {
                                 <CardContent className="p-4">
                                     <div className="flex items-center justify-between">
                                         <p className="text-xs text-muted-foreground uppercase tracking-wide">{c.label}</p>
-                                        <Icon className="w-4 h-4 text-indigo-500" />
+                                        <Icon className="w-4 h-4 text-orange-500" />
                                     </div>
                                     <p className="text-xl font-bold text-gray-900 dark:text-white mt-2 truncate">{c.value}</p>
                                 </CardContent>
