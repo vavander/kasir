@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             OwnerSeeder::class,
             SettingSeeder::class,
+            CappadociaMenuSeeder::class,
         ]);
     }
 }
