@@ -2,6 +2,7 @@ import { Head, router } from '@inertiajs/react';
 import { Download, FileSpreadsheet, FileText, TrendingDown, TrendingUp, Wallet, Coins } from 'lucide-react';
 import { useState } from 'react';
 import OwnerLayout from '@/Layouts/OwnerLayout';
+import EmptyState from '@/Components/EmptyState';
 import KpiCard from '@/Components/dashboard/KpiCard';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
@@ -187,7 +188,7 @@ export default function OwnerReportIndex({ report, filters, range }: Props) {
                             </thead>
                             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                                 {report.daily.length === 0 ? (
-                                    <tr><td colSpan={5} className="px-4 py-12 text-center text-muted-foreground">Tidak ada data.</td></tr>
+                                    <tr><td colSpan={5}><EmptyState title="Tidak ada data" description="Belum ada transaksi atau pengeluaran pada periode ini." /></td></tr>
                                 ) : (
                                     report.daily.map((row) => (
                                         <tr key={row.date} className="hover:bg-gray-50 dark:hover:bg-gray-800/30">

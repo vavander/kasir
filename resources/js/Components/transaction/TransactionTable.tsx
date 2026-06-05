@@ -1,6 +1,7 @@
 import { Link, router } from '@inertiajs/react';
-import { Eye, Printer, Search } from 'lucide-react';
+import { Eye, Printer, Receipt, Search } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import EmptyState from '@/Components/EmptyState';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Badge } from '@/Components/ui/badge';
@@ -89,10 +90,14 @@ export default function TransactionTable({
                     <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                         {transactions.data.length === 0 ? (
                             <tr>
-                                <td colSpan={showCashier ? 6 : 5} className="px-4 py-16 text-center text-muted-foreground">
-                                    {search
-                                        ? `Tidak ada transaksi dengan invoice "${search}"`
-                                        : 'Belum ada transaksi.'}
+                                <td colSpan={showCashier ? 6 : 5}>
+                                    <EmptyState
+                                        icon={Receipt}
+                                        title={search ? 'Transaksi tidak ditemukan' : 'Belum ada transaksi'}
+                                        description={search
+                                            ? `Tidak ada transaksi dengan invoice "${search}".`
+                                            : 'Transaksi yang tercatat akan muncul di sini.'}
+                                    />
                                 </td>
                             </tr>
                         ) : (

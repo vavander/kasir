@@ -1,7 +1,8 @@
 import { Head, router, usePage } from '@inertiajs/react';
-import { Edit2, Search, Trash2 } from 'lucide-react';
+import { Edit2, Receipt, Search, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import CashierLayout from '@/Layouts/CashierLayout';
+import EmptyState from '@/Components/EmptyState';
 import ExpenseForm from '@/Components/expense/ExpenseForm';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
@@ -136,8 +137,12 @@ export default function CashierExpenseIndex({ expenses, filters }: Props) {
                                 <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                                     {expenses.data.length === 0 ? (
                                         <tr>
-                                            <td colSpan={4} className="px-4 py-12 text-center text-muted-foreground">
-                                                Belum ada pengeluaran.
+                                            <td colSpan={4}>
+                                                <EmptyState
+                                                    icon={Receipt}
+                                                    title="Belum ada pengeluaran"
+                                                    description="Pengeluaran yang Anda catat akan muncul di sini."
+                                                />
                                             </td>
                                         </tr>
                                     ) : (

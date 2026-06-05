@@ -8,6 +8,8 @@ import {
     User,
 } from 'lucide-react';
 import { PropsWithChildren, useState } from 'react';
+import Toaster from '@/Components/Toaster';
+import ThemeToggle from '@/Components/ThemeToggle';
 import { PageProps } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -29,6 +31,7 @@ export default function CashierLayout({ children }: PropsWithChildren) {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
+            <Toaster />
             {/* Top Navbar */}
             <header className="h-14 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex items-center px-4 gap-4 fixed top-0 inset-x-0 z-30">
                 {/* Logo */}
@@ -72,8 +75,10 @@ export default function CashierLayout({ children }: PropsWithChildren) {
                     })}
                 </nav>
 
+                <ThemeToggle className="ml-auto" />
+
                 {/* User menu */}
-                <div className="relative ml-auto">
+                <div className="relative">
                     <button
                         onClick={() => setUserMenuOpen(!userMenuOpen)}
                         className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"

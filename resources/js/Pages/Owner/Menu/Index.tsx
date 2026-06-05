@@ -2,6 +2,7 @@ import { Head, Link, router, usePage } from '@inertiajs/react';
 import { Edit2, ImageOff, Plus, Search, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import OwnerLayout from '@/Layouts/OwnerLayout';
+import EmptyState from '@/Components/EmptyState';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Badge } from '@/Components/ui/badge';
@@ -118,13 +119,14 @@ export default function MenuIndex({ menus, filters }: MenuIndexProps) {
                         <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                             {menus.data.length === 0 ? (
                                 <tr>
-                                    <td colSpan={7} className="px-4 py-16 text-center text-muted-foreground">
-                                        <ImageOff className="w-10 h-10 mx-auto mb-3 opacity-30" />
-                                        <p>
-                                            {search
-                                                ? `Tidak ada menu dengan nama "${search}"`
-                                                : 'Belum ada menu. Tambahkan menu pertama Anda.'}
-                                        </p>
+                                    <td colSpan={7}>
+                                        <EmptyState
+                                            icon={ImageOff}
+                                            title={search ? 'Menu tidak ditemukan' : 'Belum ada menu'}
+                                            description={search
+                                                ? `Tidak ada menu dengan nama "${search}".`
+                                                : 'Tambahkan menu pertama Anda untuk mulai berjualan.'}
+                                        />
                                     </td>
                                 </tr>
                             ) : (
