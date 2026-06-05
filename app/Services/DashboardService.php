@@ -8,10 +8,25 @@ use App\Models\Expense;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class DashboardService
 {
+    /** Seconds to cache the assembled owner dashboard payload. */
+    public const CACHE_TTL = 60;
+
+    public static function cacheKey(?string $date = null): string
+    {
+        return 'dashboard:'.($date ?? today()->toDateString());
+    }
+
+    /** Invalidate today's cached dashboard (called after sales/expense writes). */
+    public static function forgetTodayCache(): void
+    {
+        Cache::forget(self::cacheKey());
+    }
+
     public function getTodaySummary(): array
     {
         $omzet = Transaction::whereDate('created_at', today())
@@ -37,34 +52,46 @@ class DashboardService
 
     public function getSalesChartData(int $days = 7): array
     {
-        $data = [];
+        $start = today()->subDays($days - 1)->startOfDay();
+        $end = today()->endOfDay();
 
-        for ($i = $days - 1; $i >= 0; $i--) {
-            $date = today()->subDays($i);
+        $byDay = Transaction::query()
+            ->selectRaw('DATE(created_at) as d, SUM(total) as t')
+            ->whereBetween('created_at', [$start, $end])
+            ->groupBy('d')
+            ->pluck('t', 'd');
 
-            $total = Transaction::whereDate('created_at', $date)->sum('total');
-
-            $data[] = [
-                'date' => $date->format('d M'),
-                'total' => (float) $total,
-            ];
-        }
-
-        return $data;
+        return $this->fillDailySeries($days, $byDay);
     }
 
     public function getExpenseChartData(int $days = 7): array
+    {
+        $start = today()->subDays($days - 1);
+        $end = today();
+
+        $byDay = Expense::query()
+            ->selectRaw('DATE(expense_date) as d, SUM(amount) as t')
+            ->whereDate('expense_date', '>=', $start->toDateString())
+            ->whereDate('expense_date', '<=', $end->toDateString())
+            ->groupBy('d')
+            ->pluck('t', 'd');
+
+        return $this->fillDailySeries($days, $byDay);
+    }
+
+    /**
+     * Build a zero-filled, chronological daily series ending today.
+     */
+    private function fillDailySeries(int $days, \Illuminate\Support\Collection $byDay): array
     {
         $data = [];
 
         for ($i = $days - 1; $i >= 0; $i--) {
             $date = today()->subDays($i);
 
-            $total = Expense::whereDate('expense_date', $date)->sum('amount');
-
             $data[] = [
                 'date' => $date->format('d M'),
-                'total' => (float) $total,
+                'total' => (float) ($byDay[$date->toDateString()] ?? 0),
             ];
         }
 

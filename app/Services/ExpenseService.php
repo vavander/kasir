@@ -48,15 +48,21 @@ class ExpenseService
 
     public function create(User $user, array $data): Expense
     {
-        return Expense::create([
+        $expense = Expense::create([
             ...$data,
             'user_id' => $user->id,
         ]);
+
+        DashboardService::forgetTodayCache();
+
+        return $expense;
     }
 
     public function update(Expense $expense, array $data): Expense
     {
         $expense->update($data);
+
+        DashboardService::forgetTodayCache();
 
         return $expense->fresh();
     }
@@ -64,5 +70,7 @@ class ExpenseService
     public function delete(Expense $expense): void
     {
         $expense->delete();
+
+        DashboardService::forgetTodayCache();
     }
 }

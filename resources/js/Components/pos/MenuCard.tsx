@@ -26,6 +26,8 @@ export default function MenuCard({ menu, qty, onAdd }: MenuCardProps) {
                     <img
                         src={menu.image_url}
                         alt={menu.name}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                     />
                 ) : (

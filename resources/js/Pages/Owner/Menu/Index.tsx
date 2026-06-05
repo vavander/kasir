@@ -137,6 +137,8 @@ export default function MenuIndex({ menus, filters }: MenuIndexProps) {
                                                 <img
                                                     src={menu.image_url}
                                                     alt={menu.name}
+                                                    loading="lazy"
+                                                    decoding="async"
                                                     className="w-10 h-10 rounded-lg object-cover"
                                                 />
                                             ) : (
