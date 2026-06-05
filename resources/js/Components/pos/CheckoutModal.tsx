@@ -16,9 +16,15 @@ export interface CheckoutPayload {
     paidAmount: number;
 }
 
+interface OpenTab {
+    customer_name: string;
+    total: number;
+}
+
 interface CheckoutModalProps {
     items: CartItem[];
     total: number;
+    openTabs?: OpenTab[];
     onConfirm: (payload: CheckoutPayload) => void;
     onCancel: () => void;
     processing: boolean;
@@ -30,7 +36,7 @@ const paymentMethods: { value: PaymentMethod; label: string; desc: string }[] = 
     { value: 'transfer', label: 'Transfer', desc: 'Bank / E-wallet' },
 ];
 
-export default function CheckoutModal({ items, total, onConfirm, onCancel, processing }: CheckoutModalProps) {
+export default function CheckoutModal({ items, total, openTabs = [], onConfirm, onCancel, processing }: CheckoutModalProps) {
     const [customerName, setCustomerName] = useState('');
     const [payLater, setPayLater] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('cash');
@@ -76,6 +82,34 @@ export default function CheckoutModal({ items, total, onConfirm, onCancel, proce
                 </div>
 
                 <div className="p-6 space-y-5">
+                    {/* Open tabs — pick an existing pay-later customer */}
+                    {openTabs.length > 0 && (
+                        <div className="space-y-1.5">
+                            <Label className="text-sm">Tambah ke pesanan pending</Label>
+                            <div className="flex flex-wrap gap-2">
+                                {openTabs.map((tab) => {
+                                    const active = payLater && customerName.trim().toLowerCase() === tab.customer_name.toLowerCase();
+                                    return (
+                                        <button
+                                            key={tab.customer_name}
+                                            type="button"
+                                            onClick={() => { setCustomerName(tab.customer_name); setPayLater(true); setError(''); }}
+                                            className={cn(
+                                                'flex items-center gap-2 rounded-lg border px-3 py-1.5 text-sm transition-colors',
+                                                active
+                                                    ? 'border-amber-500 bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300'
+                                                    : 'border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800',
+                                            )}
+                                        >
+                                            <span className="font-medium">{tab.customer_name}</span>
+                                            <span className="text-xs opacity-70">{formatRupiah(tab.total)}</span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
+
                     {/* Customer name — prominent, required */}
                     <div className="space-y-1.5">
                         <Label htmlFor="customer_name" className="text-base font-semibold">

@@ -38,9 +38,21 @@ class PosController extends Controller
             ->sort()
             ->values();
 
+        // Open (unpaid) tabs belonging to this cashier — lets the cashier add
+        // an order to an existing customer without retyping the name.
+        $openTabs = \App\Models\Transaction::unpaid()
+            ->where('cashier_id', Auth::id())
+            ->latest('id')
+            ->get(['id', 'customer_name', 'total'])
+            ->map(fn ($t) => [
+                'customer_name' => $t->customer_name,
+                'total' => (float) $t->total,
+            ]);
+
         return Inertia::render('Cashier/Pos', [
             'menus' => $menus,
             'categories' => $categories,
+            'openTabs' => $openTabs,
         ]);
     }
 

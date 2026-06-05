@@ -22,6 +22,7 @@ describe('POS Page', function () {
                 ->component('Cashier/Pos')
                 ->has('menus', 1)
                 ->has('categories')
+                ->has('openTabs')
             );
     });
 

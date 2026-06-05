@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import axios from 'axios';
 import { Search } from 'lucide-react';
 import { useCallback, useMemo, useReducer, useState } from 'react';
@@ -20,9 +20,15 @@ interface PosMenu {
     image_url: string | null;
 }
 
+interface OpenTab {
+    customer_name: string;
+    total: number;
+}
+
 interface PosProps extends PageProps {
     menus: PosMenu[];
     categories: string[];
+    openTabs: OpenTab[];
 }
 
 type CartAction =
@@ -65,7 +71,7 @@ function cartReducer(state: CartItem[], action: CartAction): CartItem[] {
 
 type Screen = 'pos' | 'checkout' | 'success';
 
-export default function Pos({ menus, categories }: PosProps) {
+export default function Pos({ menus, categories, openTabs }: PosProps) {
     const [cart, dispatch] = useReducer(cartReducer, []);
     const [search, setSearch] = useState('');
     const [activeCategory, setActiveCategory] = useState<string>('all');
@@ -104,6 +110,8 @@ export default function Pos({ menus, categories }: PosProps) {
             setLastPaidAmount(payload.paidAmount);
             setScreen('success');
             dispatch({ type: 'CLEAR' });
+            // Refresh the open-tabs list (without leaving the success screen).
+            router.reload({ only: ['openTabs'] });
         } catch (err: any) {
             alert(err.response?.data?.message ?? 'Checkout gagal. Coba lagi.');
         } finally {
@@ -210,6 +218,7 @@ export default function Pos({ menus, categories }: PosProps) {
                 <CheckoutModal
                     items={cart}
                     total={total}
+                    openTabs={openTabs}
                     onConfirm={handleCheckout}
                     onCancel={() => setScreen('pos')}
                     processing={processing}
