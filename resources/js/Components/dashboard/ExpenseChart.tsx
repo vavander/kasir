@@ -7,7 +7,7 @@ import {
     XAxis,
     YAxis,
 } from 'recharts';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 import { formatCompact, formatRupiah } from '@/lib/formatters';
 
 interface ChartDataItem {

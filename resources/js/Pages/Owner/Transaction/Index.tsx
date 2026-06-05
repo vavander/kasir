@@ -1,6 +1,6 @@
 import { Head } from '@inertiajs/react';
 import OwnerLayout from '@/Layouts/OwnerLayout';
-import TransactionTable from '@/components/transaction/TransactionTable';
+import TransactionTable from '@/Components/transaction/TransactionTable';
 import { PageProps } from '@/types';
 
 interface Props extends PageProps {

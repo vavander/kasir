@@ -1,5 +1,5 @@
 import { Trophy } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 import { formatRupiah } from '@/lib/formatters';
 
 interface TopMenu {

@@ -1,5 +1,5 @@
 import { LucideIcon } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/Components/ui/card';
 import { cn } from '@/lib/utils';
 import { formatCompact, formatRupiah } from '@/lib/formatters';
 

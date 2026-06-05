@@ -1,7 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import { ChevronLeft } from 'lucide-react';
 import OwnerLayout from '@/Layouts/OwnerLayout';
-import MenuForm from '@/components/menu/MenuForm';
+import MenuForm from '@/Components/menu/MenuForm';
 
 export default function MenuCreate() {
     return (

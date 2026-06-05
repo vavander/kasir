@@ -2,10 +2,10 @@ import { Head, Link, router, usePage } from '@inertiajs/react';
 import { Edit2, ImageOff, Plus, Search, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import OwnerLayout from '@/Layouts/OwnerLayout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
+import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/ui/input';
+import { Badge } from '@/Components/ui/badge';
+import { Switch } from '@/Components/ui/switch';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -16,7 +16,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+} from '@/Components/ui/alert-dialog';
 import { formatRupiah } from '@/lib/formatters';
 import { PageProps } from '@/types';
 

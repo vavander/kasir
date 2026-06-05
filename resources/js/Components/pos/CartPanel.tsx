@@ -1,6 +1,6 @@
 import { Minus, Plus, ShoppingCart, Trash2, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+import { Button } from '@/Components/ui/button';
+import { Separator } from '@/Components/ui/separator';
 import { formatRupiah } from '@/lib/formatters';
 
 export interface CartItem {

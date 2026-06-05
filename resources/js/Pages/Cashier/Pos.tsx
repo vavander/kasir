@@ -3,11 +3,11 @@ import axios from 'axios';
 import { Search } from 'lucide-react';
 import { useCallback, useMemo, useReducer, useState } from 'react';
 import CashierLayout from '@/Layouts/CashierLayout';
-import { Input } from '@/components/ui/input';
-import MenuCard from '@/components/pos/MenuCard';
-import CartPanel, { CartItem } from '@/components/pos/CartPanel';
-import CheckoutModal from '@/components/pos/CheckoutModal';
-import SuccessScreen from '@/components/pos/SuccessScreen';
+import { Input } from '@/Components/ui/input';
+import MenuCard from '@/Components/pos/MenuCard';
+import CartPanel, { CartItem } from '@/Components/pos/CartPanel';
+import CheckoutModal from '@/Components/pos/CheckoutModal';
+import SuccessScreen from '@/Components/pos/SuccessScreen';
 import { PageProps } from '@/types';
 
 interface PosMenu {

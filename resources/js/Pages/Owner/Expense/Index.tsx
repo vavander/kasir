@@ -2,11 +2,11 @@ import { Head, router, usePage } from '@inertiajs/react';
 import { Edit2, Search, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import OwnerLayout from '@/Layouts/OwnerLayout';
-import ExpenseForm from '@/components/expense/ExpenseForm';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
+import ExpenseForm from '@/Components/expense/ExpenseForm';
+import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/ui/input';
+import { Badge } from '@/Components/ui/badge';
+import { Card, CardContent } from '@/Components/ui/card';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -17,7 +17,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+} from '@/Components/ui/alert-dialog';
 import { formatRupiah } from '@/lib/formatters';
 import { PageProps } from '@/types';
 

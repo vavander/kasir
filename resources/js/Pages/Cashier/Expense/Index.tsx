@@ -2,9 +2,9 @@ import { Head, router, usePage } from '@inertiajs/react';
 import { Edit2, Search, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import CashierLayout from '@/Layouts/CashierLayout';
-import ExpenseForm from '@/components/expense/ExpenseForm';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import ExpenseForm from '@/Components/expense/ExpenseForm';
+import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/ui/input';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -15,7 +15,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+} from '@/Components/ui/alert-dialog';
 import { formatRupiah } from '@/lib/formatters';
 import { PageProps } from '@/types';
 

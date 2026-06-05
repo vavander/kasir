@@ -1,6 +1,6 @@
 import { Head, usePage } from '@inertiajs/react';
 import CashierLayout from '@/Layouts/CashierLayout';
-import TransactionTable from '@/components/transaction/TransactionTable';
+import TransactionTable from '@/Components/transaction/TransactionTable';
 import { PageProps } from '@/types';
 
 interface Props extends PageProps {

@@ -1,9 +1,9 @@
 import { Link, router } from '@inertiajs/react';
 import { Eye, Printer, Search } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/ui/input';
+import { Badge } from '@/Components/ui/badge';
 import { formatRupiah } from '@/lib/formatters';
 
 interface Transaction {

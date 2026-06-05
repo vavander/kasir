@@ -3,11 +3,11 @@ import { BarChart3, Receipt, TrendingDown, TrendingUp, Wallet } from 'lucide-rea
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import OwnerLayout from '@/Layouts/OwnerLayout';
-import KpiCard from '@/components/dashboard/KpiCard';
-import SalesChart from '@/components/dashboard/SalesChart';
-import ExpenseChart from '@/components/dashboard/ExpenseChart';
-import TopMenuList from '@/components/dashboard/TopMenuList';
-import RecentActivity from '@/components/dashboard/RecentActivity';
+import KpiCard from '@/Components/dashboard/KpiCard';
+import SalesChart from '@/Components/dashboard/SalesChart';
+import ExpenseChart from '@/Components/dashboard/ExpenseChart';
+import TopMenuList from '@/Components/dashboard/TopMenuList';
+import RecentActivity from '@/Components/dashboard/RecentActivity';
 
 interface Summary {
     omzet: number;
