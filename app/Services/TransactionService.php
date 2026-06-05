@@ -34,7 +34,7 @@ class TransactionService
             // Pay-later orders for a customer who already has an open (unpaid)
             // tab are merged into that tab instead of creating a new bill.
             $transaction = $payLater
-                ? $this->findOpenTab($cashier, $customerName)
+                ? $this->findOpenTab($customerName)
                 : null;
 
             $transaction ??= Transaction::create([
@@ -87,12 +87,12 @@ class TransactionService
     }
 
     /**
-     * Find this cashier's existing open (unpaid) tab for a customer, if any.
+     * Find an existing open (unpaid) tab for a customer, regardless of which
+     * cashier opened it — supports shift handover.
      */
-    private function findOpenTab(User $cashier, string $customerName): ?Transaction
+    private function findOpenTab(string $customerName): ?Transaction
     {
         return Transaction::unpaid()
-            ->where('cashier_id', $cashier->id)
             ->whereRaw('LOWER(customer_name) = ?', [mb_strtolower($customerName)])
             ->lockForUpdate()
             ->latest('id')

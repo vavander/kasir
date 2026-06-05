@@ -178,6 +178,29 @@ describe('Checkout — Pay Later', function () {
         expect($tab->refresh()->payment_status)->toBe(PaymentStatus::Unpaid);
     });
 
+    it('merges into an open tab opened by a different cashier (handover)', function () {
+        $cashierA = User::factory()->cashier()->create();
+        $cashierB = User::factory()->cashier()->create();
+        $menu = Menu::factory()->create(['selling_price' => 10000]);
+
+        $tab = Transaction::factory()->unpaid()->create([
+            'cashier_id' => $cashierA->id,
+            'customer_name' => 'Budi',
+            'subtotal' => 10000,
+            'total' => 10000,
+        ]);
+
+        $second = $this->actingAs($cashierB)->postJson(route('cashier.pos.checkout'), [
+            'items' => [['menu_id' => $menu->id, 'qty' => 1]],
+            'customer_name' => 'Budi',
+            'payment_status' => 'unpaid',
+        ])->json('transaction.id');
+
+        expect($second)->toBe($tab->id);
+        $this->assertDatabaseCount('transactions', 1);
+        $this->assertDatabaseHas('transactions', ['id' => $tab->id, 'total' => 20000]);
+    });
+
     it('keeps separate tabs for different customers', function () {
         $cashier = User::factory()->cashier()->create();
         $menu = Menu::factory()->create(['selling_price' => 10000]);

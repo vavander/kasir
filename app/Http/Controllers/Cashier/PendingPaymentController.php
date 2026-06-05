@@ -12,7 +12,6 @@ use App\Services\PaymentService;
 use App\Services\PendingPaymentService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -29,14 +28,14 @@ class PendingPaymentController extends Controller
         $date = $request->string('date')->trim()->value();
 
         return Inertia::render('Cashier/Pending/Index', [
-            'pending' => $this->pendingService->getPaginated(Auth::id(), $search, $date),
+            // All unpaid orders are visible to the active cashier (shift handover).
+            'pending' => $this->pendingService->getPaginated(null, $search, $date),
             'filters' => ['search' => $search, 'date' => $date],
         ]);
     }
 
     public function settle(SettlePaymentRequest $request, Transaction $transaction): RedirectResponse
     {
-        abort_unless($transaction->cashier_id === Auth::id(), 403);
         abort_unless($transaction->payment_status === PaymentStatus::Unpaid, 404);
 
         $this->paymentService->settle($transaction, $request->getPaymentMethod(), (float) $request->validated('paid_amount'));

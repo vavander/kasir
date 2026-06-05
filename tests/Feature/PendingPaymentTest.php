@@ -26,15 +26,16 @@ describe('Pending Payments — Access & Scoping', function () {
             );
     });
 
-    it('cashier sees only their own unpaid transactions', function () {
+    it('cashier sees all unpaid transactions including other shifts', function () {
         $cashier = User::factory()->cashier()->create();
         $other = User::factory()->cashier()->create();
         Transaction::factory()->unpaid()->count(2)->create(['cashier_id' => $cashier->id]);
         Transaction::factory()->unpaid()->count(3)->create(['cashier_id' => $other->id]);
+        Transaction::factory()->create(['cashier_id' => $other->id]); // paid — excluded
 
         $this->actingAs($cashier)
             ->get(route('cashier.pending.index'))
-            ->assertInertia(fn ($page) => $page->has('pending.data', 2));
+            ->assertInertia(fn ($page) => $page->has('pending.data', 5));
     });
 
     it('owner cannot access cashier pending and vice versa', function () {
@@ -77,17 +78,17 @@ describe('Settle Payment', function () {
         expect($trx->payment_method)->toBe(PaymentMethod::Cash);
     });
 
-    it('cashier cannot settle another cashier transaction', function () {
+    it('cashier can settle another cashier unpaid order (shift handover)', function () {
         $cashier = User::factory()->cashier()->create();
         $other = User::factory()->cashier()->create();
-        $trx = Transaction::factory()->unpaid()->create(['cashier_id' => $other->id]);
+        $trx = Transaction::factory()->unpaid()->create(['cashier_id' => $other->id, 'total' => 30000]);
 
         $this->actingAs($cashier)->put(route('cashier.pending.settle', $trx), [
             'payment_method' => 'cash',
             'paid_amount' => 30000,
-        ])->assertStatus(403);
+        ])->assertRedirect();
 
-        expect($trx->refresh()->payment_status)->toBe(PaymentStatus::Unpaid);
+        expect($trx->refresh()->payment_status)->toBe(PaymentStatus::Paid);
     });
 
     it('owner can settle any unpaid transaction', function () {

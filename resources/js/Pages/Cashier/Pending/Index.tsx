@@ -15,13 +15,14 @@ export default function CashierPendingIndex({ pending, filters }: Props) {
             <div className="p-6 space-y-6">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Pesanan Belum Bayar</h1>
-                    <p className="text-sm text-muted-foreground mt-0.5">Pesanan Anda yang belum dilunasi</p>
+                    <p className="text-sm text-muted-foreground mt-0.5">Semua pesanan yang belum dilunasi (termasuk shift sebelumnya)</p>
                 </div>
                 <PendingTable
                     pending={pending}
                     filters={filters}
                     indexRoute={route('cashier.pending.index')}
                     settleRouteName="cashier.pending.settle"
+                    showCashier
                 />
             </div>
         </CashierLayout>
