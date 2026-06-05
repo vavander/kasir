@@ -5,13 +5,60 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Cashier;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Transaction\CheckoutRequest;
+use App\Models\Menu;
+use App\Services\TransactionService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class PosController extends Controller
 {
+    public function __construct(private readonly TransactionService $transactionService) {}
+
     public function index(): Response
     {
-        return Inertia::render('Cashier/Pos');
+        $menus = Menu::active()
+            ->select('id', 'name', 'selling_price', 'image')
+            ->orderBy('name')
+            ->get()
+            ->map(fn ($m) => [
+                'id' => $m->id,
+                'name' => $m->name,
+                'selling_price' => (float) $m->selling_price,
+                'image_url' => $m->image_url,
+            ]);
+
+        return Inertia::render('Cashier/Pos', [
+            'menus' => $menus,
+        ]);
+    }
+
+    public function checkout(CheckoutRequest $request): JsonResponse
+    {
+        $transaction = $this->transactionService->checkout(
+            cashier: Auth::user(),
+            items: $request->validated('items'),
+            paymentMethod: $request->getPaymentMethod(),
+        );
+
+        return response()->json([
+            'transaction' => [
+                'id' => $transaction->id,
+                'invoice_number' => $transaction->invoice_number,
+                'payment_method' => $transaction->payment_method->label(),
+                'subtotal' => (float) $transaction->subtotal,
+                'total' => (float) $transaction->total,
+                'cashier_name' => $transaction->cashier->name,
+                'created_at' => $transaction->created_at->format('d/m/Y H:i'),
+                'items' => $transaction->items->map(fn ($item) => [
+                    'menu_name' => $item->menu_name,
+                    'qty' => $item->qty,
+                    'selling_price' => (float) $item->selling_price,
+                    'subtotal' => (float) $item->subtotal,
+                ]),
+            ],
+        ], 201);
     }
 }

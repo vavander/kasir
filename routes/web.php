@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Cashier\PosController;
+use App\Http\Controllers\Cashier\TransactionController;
 use App\Http\Controllers\Owner\DashboardController;
 use App\Http\Controllers\Owner\MenuController;
 use App\Http\Controllers\ProfileController;
@@ -31,10 +32,14 @@ Route::middleware(['auth', 'active', 'owner'])->group(function () {
 // Cashier routes
 Route::middleware(['auth', 'active', 'cashier'])->group(function () {
     Route::get('/pos', [PosController::class, 'index'])->name('cashier.pos');
+    Route::post('/pos/checkout', [PosController::class, 'checkout'])->name('cashier.pos.checkout');
 });
 
-// Shared authenticated routes
+// Shared authenticated routes (owner + cashier)
 Route::middleware(['auth', 'active'])->group(function () {
+    Route::get('/transactions/{transaction}/receipt', [TransactionController::class, 'receipt'])
+        ->name('transactions.receipt');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
