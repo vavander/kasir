@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Cashier\ExpenseController as CashierExpenseController;
 use App\Http\Controllers\Cashier\PosController;
 use App\Http\Controllers\Cashier\TransactionController as CashierTransactionController;
 use App\Http\Controllers\Cashier\TransactionHistoryController;
 use App\Http\Controllers\Owner\DashboardController;
+use App\Http\Controllers\Owner\ExpenseController as OwnerExpenseController;
 use App\Http\Controllers\Owner\MenuController;
 use App\Http\Controllers\Owner\TransactionController as OwnerTransactionController;
 use App\Http\Controllers\ProfileController;
@@ -34,6 +36,11 @@ Route::middleware(['auth', 'active', 'owner'])->group(function () {
         ->name('owner.transactions.index');
     Route::get('/transactions/{id}', [OwnerTransactionController::class, 'show'])
         ->name('owner.transactions.show');
+
+    Route::get('/expenses', [OwnerExpenseController::class, 'index'])->name('owner.expenses.index');
+    Route::post('/expenses', [OwnerExpenseController::class, 'store'])->name('owner.expenses.store');
+    Route::put('/expenses/{expense}', [OwnerExpenseController::class, 'update'])->name('owner.expenses.update');
+    Route::delete('/expenses/{expense}', [OwnerExpenseController::class, 'destroy'])->name('owner.expenses.destroy');
 });
 
 // Cashier routes
@@ -45,6 +52,11 @@ Route::middleware(['auth', 'active', 'cashier'])->group(function () {
         ->name('cashier.transactions.index');
     Route::get('/cashier/transactions/{id}', [TransactionHistoryController::class, 'show'])
         ->name('cashier.transactions.show');
+
+    Route::get('/cashier/expenses', [CashierExpenseController::class, 'index'])->name('cashier.expenses.index');
+    Route::post('/cashier/expenses', [CashierExpenseController::class, 'store'])->name('cashier.expenses.store');
+    Route::put('/cashier/expenses/{expense}', [CashierExpenseController::class, 'update'])->name('cashier.expenses.update');
+    Route::delete('/cashier/expenses/{expense}', [CashierExpenseController::class, 'destroy'])->name('cashier.expenses.destroy');
 });
 
 // Shared authenticated routes (owner + cashier)
