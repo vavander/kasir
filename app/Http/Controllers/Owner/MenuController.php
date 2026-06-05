@@ -50,6 +50,7 @@ class MenuController extends Controller
             'menu' => [
                 'id' => $menu->id,
                 'name' => $menu->name,
+                'category' => $menu->category,
                 'hpp' => (float) $menu->hpp,
                 'selling_price' => (float) $menu->selling_price,
                 'image_url' => $menu->image_url,

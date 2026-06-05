@@ -8,6 +8,7 @@ import {
     Receipt,
     Settings,
     ShoppingBag,
+    Users,
     UtensilsCrossed,
     User,
     X,
@@ -23,6 +24,7 @@ const navItems = [
     { label: 'Menu', href: 'owner.menus.index', icon: ShoppingBag },
     { label: 'Pengeluaran', href: 'owner.expenses.index', icon: Receipt },
     { label: 'Laporan', href: 'owner.reports.index', icon: BarChart3 },
+    { label: 'Kasir', href: 'owner.cashiers.index', icon: Users },
     { label: 'Pengaturan', href: 'owner.settings.index', icon: Settings },
 ];
 

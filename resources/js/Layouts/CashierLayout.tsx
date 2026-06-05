@@ -1,6 +1,7 @@
 import { Link, router, usePage } from '@inertiajs/react';
 import {
     ClipboardList,
+    LayoutDashboard,
     LogOut,
     Receipt,
     ShoppingCart,
@@ -14,6 +15,7 @@ import { PageProps } from '@/types';
 import { cn } from '@/lib/utils';
 
 const navItems = [
+    { label: 'Beranda', href: 'cashier.dashboard', icon: LayoutDashboard },
     { label: 'POS', href: 'cashier.pos', icon: ShoppingCart },
     { label: 'Transaksi', href: 'cashier.transactions.index', icon: ClipboardList },
     { label: 'Pengeluaran', href: 'cashier.expenses.index', icon: Receipt },

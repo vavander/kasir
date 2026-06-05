@@ -17,9 +17,12 @@ $ownerRoutes = [
     'owner.reports.index',
     'owner.reports.export.pdf',
     'owner.reports.export.excel',
+    'owner.cashiers.index',
+    'owner.cashiers.create',
 ];
 
 $cashierRoutes = [
+    'cashier.dashboard',
     'cashier.pos',
     'cashier.transactions.index',
     'cashier.expenses.index',

@@ -5,7 +5,7 @@ import { PageProps } from '@/types';
 
 interface Props extends PageProps {
     transactions: any;
-    filters: { search: string };
+    filters: { search: string; date?: string };
 }
 
 export default function CashierTransactionIndex({ transactions, filters }: Props) {
@@ -32,6 +32,7 @@ export default function CashierTransactionIndex({ transactions, filters }: Props
                     indexRoute={route('cashier.transactions.index')}
                     showRoute="cashier.transactions.show"
                     showReceiptButton
+                    showDateFilter
                 />
             </div>
         </CashierLayout>

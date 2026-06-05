@@ -18,13 +18,15 @@ class TransactionHistoryController extends Controller
     public function index(Request $request): Response
     {
         $search = $request->string('search')->trim()->value();
+        $date = $request->string('date')->trim()->value();
 
         return Inertia::render('Cashier/Transaction/Index', [
             'transactions' => $this->service->getPaginatedForCashier(
                 cashierId: Auth::id(),
                 search: $search,
+                date: $date,
             ),
-            'filters' => ['search' => $search],
+            'filters' => ['search' => $search, 'date' => $date],
         ]);
     }
 

@@ -10,6 +10,7 @@ import { formatRupiah } from '@/lib/formatters';
 
 interface MenuFormData {
     name: string;
+    category: string;
     hpp: string;
     selling_price: string;
     image: File | null;
@@ -21,6 +22,7 @@ interface MenuFormProps {
     initialData?: {
         id?: number;
         name: string;
+        category?: string | null;
         hpp: number;
         selling_price: number;
         image_url?: string | null;
@@ -30,12 +32,15 @@ interface MenuFormProps {
     mode: 'create' | 'edit';
 }
 
+const CATEGORY_SUGGESTIONS = ['Makanan', 'Minuman', 'Snack', 'Paket', 'Lainnya'];
+
 export default function MenuForm({ initialData, submitRoute, mode }: MenuFormProps) {
     const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image_url ?? null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const { data, setData, post, processing, errors } = useForm<MenuFormData>({
         name: initialData?.name ?? '',
+        category: initialData?.category ?? '',
         hpp: initialData ? String(initialData.hpp) : '',
         selling_price: initialData ? String(initialData.selling_price) : '',
         image: null,
@@ -86,6 +91,25 @@ export default function MenuForm({ initialData, submitRoute, mode }: MenuFormPro
                             className={errors.name ? 'border-rose-500' : ''}
                         />
                         {errors.name && <p className="text-xs text-rose-500">{errors.name}</p>}
+                    </div>
+
+                    {/* Kategori */}
+                    <div className="space-y-1.5">
+                        <Label htmlFor="category">Kategori</Label>
+                        <Input
+                            id="category"
+                            list="menu-category-suggestions"
+                            value={data.category}
+                            onChange={(e) => setData('category', e.target.value)}
+                            placeholder="Contoh: Makanan, Minuman"
+                            className={errors.category ? 'border-rose-500' : ''}
+                        />
+                        <datalist id="menu-category-suggestions">
+                            {CATEGORY_SUGGESTIONS.map((c) => (
+                                <option key={c} value={c} />
+                            ))}
+                        </datalist>
+                        {errors.category && <p className="text-xs text-rose-500">{errors.category}</p>}
                     </div>
 
                     {/* HPP dan Harga Jual */}

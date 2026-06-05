@@ -20,18 +20,27 @@ class PosController extends Controller
     public function index(): Response
     {
         $menus = Menu::active()
-            ->select('id', 'name', 'selling_price', 'image')
+            ->select('id', 'name', 'category', 'selling_price', 'image')
             ->orderBy('name')
             ->get()
             ->map(fn ($m) => [
                 'id' => $m->id,
                 'name' => $m->name,
+                'category' => $m->category,
                 'selling_price' => (float) $m->selling_price,
                 'image_url' => $m->image_url,
             ]);
 
+        $categories = $menus
+            ->pluck('category')
+            ->filter()
+            ->unique()
+            ->sort()
+            ->values();
+
         return Inertia::render('Cashier/Pos', [
             'menus' => $menus,
+            'categories' => $categories,
         ]);
     }
 

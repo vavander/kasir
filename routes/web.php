@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Cashier\DashboardController as CashierDashboardController;
 use App\Http\Controllers\Cashier\ExpenseController as CashierExpenseController;
 use App\Http\Controllers\Cashier\PosController;
 use App\Http\Controllers\Cashier\TransactionController as CashierTransactionController;
 use App\Http\Controllers\Cashier\TransactionHistoryController;
 use App\Http\Controllers\Owner\DashboardController;
 use App\Http\Controllers\Owner\ExpenseController as OwnerExpenseController;
+use App\Http\Controllers\Owner\CashierController;
 use App\Http\Controllers\Owner\MenuController;
 use App\Http\Controllers\Owner\ReportController;
 use App\Http\Controllers\Owner\TransactionController as OwnerTransactionController;
@@ -46,10 +48,21 @@ Route::middleware(['auth', 'active', 'owner'])->group(function () {
     Route::get('/reports', [ReportController::class, 'index'])->name('owner.reports.index');
     Route::get('/reports/export/pdf', [ReportController::class, 'exportPdf'])->name('owner.reports.export.pdf');
     Route::get('/reports/export/excel', [ReportController::class, 'exportExcel'])->name('owner.reports.export.excel');
+
+    Route::get('/cashiers', [CashierController::class, 'index'])->name('owner.cashiers.index');
+    Route::get('/cashiers/create', [CashierController::class, 'create'])->name('owner.cashiers.create');
+    Route::post('/cashiers', [CashierController::class, 'store'])->name('owner.cashiers.store');
+    Route::get('/cashiers/{cashier}', [CashierController::class, 'show'])->name('owner.cashiers.show');
+    Route::get('/cashiers/{cashier}/edit', [CashierController::class, 'edit'])->name('owner.cashiers.edit');
+    Route::put('/cashiers/{cashier}', [CashierController::class, 'update'])->name('owner.cashiers.update');
+    Route::patch('/cashiers/{cashier}/toggle-status', [CashierController::class, 'toggleStatus'])->name('owner.cashiers.toggle-status');
+    Route::put('/cashiers/{cashier}/reset-password', [CashierController::class, 'resetPassword'])->name('owner.cashiers.reset-password');
 });
 
 // Cashier routes
 Route::middleware(['auth', 'active', 'cashier'])->group(function () {
+    Route::get('/cashier/dashboard', [CashierDashboardController::class, 'index'])->name('cashier.dashboard');
+
     Route::get('/pos', [PosController::class, 'index'])->name('cashier.pos');
     Route::post('/pos/checkout', [PosController::class, 'checkout'])->name('cashier.pos.checkout');
 

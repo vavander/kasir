@@ -21,6 +21,7 @@ class UpdateMenuRequest extends FormRequest
                 'required', 'string', 'max:100',
                 Rule::unique('menus', 'name')->ignore($this->route('menu')),
             ],
+            'category' => ['nullable', 'string', 'max:50'],
             'hpp' => ['required', 'numeric', 'min:0'],
             'selling_price' => ['required', 'numeric', 'min:0'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],

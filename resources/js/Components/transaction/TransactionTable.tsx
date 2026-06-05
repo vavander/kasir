@@ -27,11 +27,12 @@ interface PaginatedTransactions {
 
 interface TransactionTableProps {
     transactions: PaginatedTransactions;
-    filters: { search: string };
+    filters: { search: string; date?: string };
     showCashier?: boolean;
     indexRoute: string;
     showRoute: string;
     showReceiptButton?: boolean;
+    showDateFilter?: boolean;
 }
 
 const paymentBadge: Record<string, 'success' | 'default' | 'secondary'> = {
@@ -47,29 +48,43 @@ export default function TransactionTable({
     indexRoute,
     showRoute,
     showReceiptButton = false,
+    showDateFilter = false,
 }: TransactionTableProps) {
     const [search, setSearch] = useState(filters.search ?? '');
+    const [date, setDate] = useState(filters.date ?? '');
     const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
         if (timeout.current) clearTimeout(timeout.current);
         timeout.current = setTimeout(() => {
-            router.get(indexRoute, { search }, { preserveState: true, replace: true });
+            const params = showDateFilter ? { search, date } : { search };
+            router.get(indexRoute, params, { preserveState: true, replace: true });
         }, 300);
         return () => { if (timeout.current) clearTimeout(timeout.current); };
-    }, [search]);
+    }, [search, date]);
 
     return (
         <div className="space-y-4">
-            {/* Search */}
-            <div className="relative max-w-sm">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                    placeholder="Cari nomor invoice..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="pl-9"
-                />
+            {/* Filters */}
+            <div className="flex flex-wrap items-center gap-3">
+                <div className="relative max-w-sm flex-1 min-w-[200px]">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                        placeholder="Cari nomor invoice..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="pl-9"
+                    />
+                </div>
+                {showDateFilter && (
+                    <Input
+                        type="date"
+                        value={date}
+                        max={new Date().toISOString().split('T')[0]}
+                        onChange={(e) => setDate(e.target.value)}
+                        className="w-auto"
+                    />
+                )}
             </div>
 
             {/* Table */}

@@ -9,11 +9,12 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class TransactionHistoryService
 {
-    public function getPaginatedForCashier(int $cashierId, string $search = '', int $perPage = 15): LengthAwarePaginator
+    public function getPaginatedForCashier(int $cashierId, string $search = '', string $date = '', int $perPage = 15): LengthAwarePaginator
     {
         return Transaction::with('cashier:id,name')
             ->where('cashier_id', $cashierId)
             ->when($search, fn ($q) => $q->where('invoice_number', 'like', "%{$search}%"))
+            ->when($date, fn ($q) => $q->whereDate('created_at', $date))
             ->latest()
             ->paginate($perPage)
             ->withQueryString();

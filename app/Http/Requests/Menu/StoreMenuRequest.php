@@ -17,6 +17,7 @@ class StoreMenuRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:100', 'unique:menus,name'],
+            'category' => ['nullable', 'string', 'max:50'],
             'hpp' => ['required', 'numeric', 'min:0'],
             'selling_price' => ['required', 'numeric', 'min:0'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
