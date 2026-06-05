@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\PaymentMethod;
+use App\Enums\PaymentStatus;
 use App\Models\Menu;
 use App\Models\Transaction;
 use App\Models\User;
@@ -17,18 +18,27 @@ class TransactionService
     /**
      * @param  array<int, array{menu_id: int, qty: int}>  $items
      */
-    public function checkout(User $cashier, array $items, PaymentMethod $paymentMethod): Transaction
-    {
+    public function checkout(
+        User $cashier,
+        array $items,
+        string $customerName,
+        ?PaymentMethod $paymentMethod,
+        bool $payLater = false,
+    ): Transaction {
         // Load every referenced menu in a single query (avoids N+1).
         $menus = Menu::whereIn('id', array_column($items, 'menu_id'))->get()->keyBy('id');
 
-        $transaction = DB::transaction(function () use ($cashier, $items, $paymentMethod, $menus) {
+        $transaction = DB::transaction(function () use ($cashier, $items, $customerName, $paymentMethod, $payLater, $menus) {
             $invoiceNumber = $this->invoiceService->generate();
 
             $transaction = Transaction::create([
                 'invoice_number' => $invoiceNumber,
                 'cashier_id' => $cashier->id,
-                'payment_method' => $paymentMethod->value,
+                'customer_name' => $customerName,
+                'payment_method' => $payLater ? null : $paymentMethod?->value,
+                'payment_status' => $payLater
+                    ? PaymentStatus::Unpaid->value
+                    : PaymentStatus::Paid->value,
                 'subtotal' => 0,
                 'total' => 0,
             ]);

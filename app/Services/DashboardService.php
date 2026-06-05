@@ -50,6 +50,14 @@ class DashboardService
         ];
     }
 
+    public function getPendingSummary(): array
+    {
+        return [
+            'count' => Transaction::unpaid()->count(),
+            'value' => (float) Transaction::unpaid()->sum('total'),
+        ];
+    }
+
     public function getSalesChartData(int $days = 7): array
     {
         $start = today()->subDays($days - 1)->startOfDay();
@@ -127,7 +135,7 @@ class DashboardService
                 'id' => $t->id,
                 'invoice_number' => $t->invoice_number,
                 'cashier_name' => $t->cashier->name ?? '-',
-                'payment_method' => $t->payment_method->label(),
+                'payment_method' => $t->payment_method?->label() ?? '-',
                 'total' => (float) $t->total,
                 'created_at' => $t->created_at->format('d M Y, H:i'),
             ])

@@ -1,6 +1,7 @@
 import { Link, router, usePage } from '@inertiajs/react';
 import {
     ClipboardList,
+    Clock,
     LayoutDashboard,
     LogOut,
     Receipt,
@@ -17,6 +18,7 @@ import { cn } from '@/lib/utils';
 const navItems = [
     { label: 'Beranda', href: 'cashier.dashboard', icon: LayoutDashboard },
     { label: 'POS', href: 'cashier.pos', icon: ShoppingCart },
+    { label: 'Pending', href: 'cashier.pending.index', icon: Clock },
     { label: 'Transaksi', href: 'cashier.transactions.index', icon: ClipboardList },
     { label: 'Pengeluaran', href: 'cashier.expenses.index', icon: Receipt },
 ];

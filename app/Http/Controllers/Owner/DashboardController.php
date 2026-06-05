@@ -23,6 +23,7 @@ class DashboardController extends Controller
             DashboardService::CACHE_TTL,
             fn (): array => [
                 'summary' => $this->dashboardService->getTodaySummary(),
+                'pending' => $this->dashboardService->getPendingSummary(),
                 'salesChart' => $this->dashboardService->getSalesChartData(7),
                 'expenseChart' => $this->dashboardService->getExpenseChartData(7),
                 'topMenus' => $this->dashboardService->getTopMenus(5),

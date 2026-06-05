@@ -11,7 +11,9 @@ interface Transaction {
     id: number;
     invoice_number: string;
     cashier_name?: string;
-    payment_method: string;
+    customer_name?: string | null;
+    payment_method: string | null;
+    payment_status?: 'paid' | 'unpaid';
     total: number;
     created_at: string;
 }
@@ -93,10 +95,12 @@ export default function TransactionTable({
                     <thead>
                         <tr className="border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
                             <th className="text-left px-4 py-3 font-medium text-muted-foreground">Invoice</th>
+                            <th className="text-left px-4 py-3 font-medium text-muted-foreground">Pelanggan</th>
                             <th className="text-left px-4 py-3 font-medium text-muted-foreground">Tanggal</th>
                             {showCashier && (
                                 <th className="text-left px-4 py-3 font-medium text-muted-foreground">Kasir</th>
                             )}
+                            <th className="text-center px-4 py-3 font-medium text-muted-foreground">Status</th>
                             <th className="text-center px-4 py-3 font-medium text-muted-foreground">Pembayaran</th>
                             <th className="text-right px-4 py-3 font-medium text-muted-foreground">Total</th>
                             <th className="text-center px-4 py-3 font-medium text-muted-foreground w-24">Aksi</th>
@@ -105,7 +109,7 @@ export default function TransactionTable({
                     <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                         {transactions.data.length === 0 ? (
                             <tr>
-                                <td colSpan={showCashier ? 6 : 5}>
+                                <td colSpan={showCashier ? 8 : 7}>
                                     <EmptyState
                                         icon={Receipt}
                                         title={search ? 'Transaksi tidak ditemukan' : 'Belum ada transaksi'}
@@ -121,6 +125,9 @@ export default function TransactionTable({
                                     <td className="px-4 py-3 font-mono text-xs font-medium text-gray-900 dark:text-white">
                                         {t.invoice_number}
                                     </td>
+                                    <td className="px-4 py-3 text-gray-700 dark:text-gray-300">
+                                        {t.customer_name ?? '-'}
+                                    </td>
                                     <td className="px-4 py-3 text-muted-foreground">
                                         {t.created_at}
                                     </td>
@@ -130,9 +137,14 @@ export default function TransactionTable({
                                         </td>
                                     )}
                                     <td className="px-4 py-3 text-center">
-                                        <Badge variant={paymentBadge[t.payment_method] ?? 'secondary'}>
-                                            {t.payment_method}
+                                        <Badge variant={t.payment_status === 'paid' ? 'success' : 'warning'}>
+                                            {t.payment_status === 'paid' ? 'LUNAS' : 'BELUM BAYAR'}
                                         </Badge>
+                                    </td>
+                                    <td className="px-4 py-3 text-center">
+                                        {t.payment_method
+                                            ? <Badge variant={paymentBadge[t.payment_method] ?? 'secondary'}>{t.payment_method}</Badge>
+                                            : <span className="text-muted-foreground">-</span>}
                                     </td>
                                     <td className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-white">
                                         {formatRupiah(t.total)}

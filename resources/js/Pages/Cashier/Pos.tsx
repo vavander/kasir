@@ -7,7 +7,7 @@ import EmptyState from '@/Components/EmptyState';
 import { Input } from '@/Components/ui/input';
 import MenuCard from '@/Components/pos/MenuCard';
 import CartPanel, { CartItem } from '@/Components/pos/CartPanel';
-import CheckoutModal from '@/Components/pos/CheckoutModal';
+import CheckoutModal, { CheckoutPayload } from '@/Components/pos/CheckoutModal';
 import SuccessScreen from '@/Components/pos/SuccessScreen';
 import { cn } from '@/lib/utils';
 import { PageProps } from '@/types';
@@ -90,16 +90,18 @@ export default function Pos({ menus, categories }: PosProps) {
 
     const total = useMemo(() => cart.reduce((s, i) => s + i.selling_price * i.qty, 0), [cart]);
 
-    const handleCheckout = async (paymentMethod: 'cash' | 'qris' | 'transfer', paidAmount: number) => {
+    const handleCheckout = async (payload: CheckoutPayload) => {
         setProcessing(true);
         try {
             const res = await axios.post(route('cashier.pos.checkout'), {
                 items: cart.map((i) => ({ menu_id: i.menu_id, qty: i.qty })),
-                payment_method: paymentMethod,
-                paid_amount: paidAmount,
+                customer_name: payload.customerName,
+                payment_status: payload.payLater ? 'unpaid' : 'paid',
+                payment_method: payload.payLater ? null : payload.paymentMethod,
+                paid_amount: payload.payLater ? null : payload.paidAmount,
             });
             setLastTransaction(res.data.transaction);
-            setLastPaidAmount(paidAmount);
+            setLastPaidAmount(payload.paidAmount);
             setScreen('success');
             dispatch({ type: 'CLEAR' });
         } catch (err: any) {

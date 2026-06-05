@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import { BarChart3, Receipt, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
+import { BarChart3, Clock, HandCoins, Receipt, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import OwnerLayout from '@/Layouts/OwnerLayout';
@@ -8,6 +8,7 @@ import SalesChart from '@/Components/dashboard/SalesChart';
 import ExpenseChart from '@/Components/dashboard/ExpenseChart';
 import TopMenuList from '@/Components/dashboard/TopMenuList';
 import RecentActivity from '@/Components/dashboard/RecentActivity';
+import { formatRupiah } from '@/lib/formatters';
 
 interface Summary {
     omzet: number;
@@ -45,8 +46,14 @@ interface RecentExpense {
     expense_date: string;
 }
 
+interface PendingSummary {
+    count: number;
+    value: number;
+}
+
 interface DashboardProps {
     summary: Summary;
+    pending: PendingSummary;
     salesChart: ChartData[];
     expenseChart: ChartData[];
     topMenus: TopMenu[];
@@ -88,6 +95,7 @@ const kpiConfig = [
 
 export default function Dashboard({
     summary,
+    pending,
     salesChart,
     expenseChart,
     topMenus,
@@ -126,6 +134,28 @@ export default function Dashboard({
                             isNegativeAllowed={kpi.isNegativeAllowed}
                         />
                     ))}
+                </div>
+
+                {/* Pending orders */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="rounded-xl border border-amber-200 dark:border-amber-900 bg-amber-50/50 dark:bg-amber-950/30 p-5 flex items-center justify-between">
+                        <div>
+                            <p className="text-xs font-medium text-amber-700 dark:text-amber-400 uppercase tracking-wide">Pesanan Belum Bayar</p>
+                            <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{pending.count}</p>
+                        </div>
+                        <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900 flex items-center justify-center">
+                            <Clock className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                        </div>
+                    </div>
+                    <div className="rounded-xl border border-amber-200 dark:border-amber-900 bg-amber-50/50 dark:bg-amber-950/30 p-5 flex items-center justify-between">
+                        <div>
+                            <p className="text-xs font-medium text-amber-700 dark:text-amber-400 uppercase tracking-wide">Nilai Belum Bayar</p>
+                            <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1 truncate" title={formatRupiah(pending.value)}>{formatRupiah(pending.value)}</p>
+                        </div>
+                        <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900 flex items-center justify-center">
+                            <HandCoins className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                        </div>
+                    </div>
                 </div>
 
                 {/* Charts */}

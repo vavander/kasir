@@ -55,8 +55,12 @@
             <td class="right">{{ $transaction->cashier->name }}</td>
         </tr>
         <tr>
+            <td>Pelanggan</td>
+            <td class="right">{{ $transaction->customer_name ?? '-' }}</td>
+        </tr>
+        <tr>
             <td>Pembayaran</td>
-            <td class="right">{{ $transaction->payment_method->label() }}</td>
+            <td class="right">{{ $transaction->payment_method?->label() ?? 'Belum Bayar' }}</td>
         </tr>
     </table>
 

@@ -47,7 +47,7 @@ class TransactionHistoryService
             'id' => $t->id,
             'invoice_number' => $t->invoice_number,
             'cashier_name' => $t->cashier->name ?? '-',
-            'payment_method' => $t->payment_method->label(),
+            'payment_method' => $t->payment_method?->label() ?? '-',
             'subtotal' => (float) $t->subtotal,
             'total' => (float) $t->total,
             'created_at' => $t->created_at->format('d M Y, H:i'),

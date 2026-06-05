@@ -1,12 +1,15 @@
 import { CheckCircle2, Printer, ShoppingCart } from 'lucide-react';
 import { Button } from '@/Components/ui/button';
+import { Badge } from '@/Components/ui/badge';
 import { Separator } from '@/Components/ui/separator';
 import { formatRupiah } from '@/lib/formatters';
 
 interface TransactionResult {
     id: number;
     invoice_number: string;
+    customer_name?: string | null;
     payment_method: string;
+    payment_status?: 'paid' | 'unpaid';
     total: number;
     cashier_name: string;
     created_at: string;
@@ -37,11 +40,19 @@ export default function SuccessScreen({ transaction, paidAmount, onNewTransactio
                     </div>
                     <div>
                         <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                            Transaksi Berhasil!
+                            {transaction.payment_status === 'unpaid' ? 'Pesanan Tersimpan!' : 'Transaksi Berhasil!'}
                         </h2>
                         <p className="text-sm text-muted-foreground mt-0.5">
                             {transaction.invoice_number}
                         </p>
+                        <div className="flex items-center justify-center gap-2 mt-2">
+                            {transaction.customer_name && (
+                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{transaction.customer_name}</span>
+                            )}
+                            <Badge variant={transaction.payment_status === 'unpaid' ? 'warning' : 'success'}>
+                                {transaction.payment_status === 'unpaid' ? 'BELUM BAYAR' : 'LUNAS'}
+                            </Badge>
+                        </div>
                     </div>
                 </div>
 

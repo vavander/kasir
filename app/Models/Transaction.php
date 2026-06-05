@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\PaymentMethod;
+use App\Enums\PaymentStatus;
 use Database\Factories\TransactionFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +20,9 @@ class Transaction extends Model
     protected $fillable = [
         'invoice_number',
         'cashier_id',
+        'customer_name',
         'payment_method',
+        'payment_status',
         'subtotal',
         'total',
     ];
@@ -28,6 +31,7 @@ class Transaction extends Model
     {
         return [
             'payment_method' => PaymentMethod::class,
+            'payment_status' => PaymentStatus::class,
             'subtotal' => 'decimal:2',
             'total' => 'decimal:2',
         ];
@@ -51,6 +55,16 @@ class Transaction extends Model
     public function scopeToday($query)
     {
         return $query->whereDate('created_at', today());
+    }
+
+    public function scopeUnpaid($query)
+    {
+        return $query->where('payment_status', PaymentStatus::Unpaid->value);
+    }
+
+    public function scopePaid($query)
+    {
+        return $query->where('payment_status', PaymentStatus::Paid->value);
     }
 
     public function scopeForCashier($query, int $cashierId)

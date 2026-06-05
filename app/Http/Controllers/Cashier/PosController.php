@@ -49,14 +49,18 @@ class PosController extends Controller
         $transaction = $this->transactionService->checkout(
             cashier: Auth::user(),
             items: $request->validated('items'),
+            customerName: $request->validated('customer_name'),
             paymentMethod: $request->getPaymentMethod(),
+            payLater: ! $request->isPaidNow(),
         );
 
         return response()->json([
             'transaction' => [
                 'id' => $transaction->id,
                 'invoice_number' => $transaction->invoice_number,
-                'payment_method' => $transaction->payment_method->label(),
+                'customer_name' => $transaction->customer_name,
+                'payment_method' => $transaction->payment_method?->label() ?? '-',
+                'payment_status' => $transaction->payment_status->value,
                 'subtotal' => (float) $transaction->subtotal,
                 'total' => (float) $transaction->total,
                 'cashier_name' => $transaction->cashier->name,

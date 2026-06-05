@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Cashier\DashboardController as CashierDashboardController;
 use App\Http\Controllers\Cashier\ExpenseController as CashierExpenseController;
+use App\Http\Controllers\Cashier\PendingPaymentController as CashierPendingPaymentController;
 use App\Http\Controllers\Cashier\PosController;
 use App\Http\Controllers\Cashier\TransactionController as CashierTransactionController;
 use App\Http\Controllers\Cashier\TransactionHistoryController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Owner\DashboardController;
 use App\Http\Controllers\Owner\ExpenseController as OwnerExpenseController;
 use App\Http\Controllers\Owner\CashierController;
 use App\Http\Controllers\Owner\MenuController;
+use App\Http\Controllers\Owner\PendingPaymentController as OwnerPendingPaymentController;
 use App\Http\Controllers\Owner\ReportController;
 use App\Http\Controllers\Owner\TransactionController as OwnerTransactionController;
 use App\Http\Controllers\ProfileController;
@@ -49,6 +51,9 @@ Route::middleware(['auth', 'active', 'owner'])->group(function () {
     Route::get('/reports/export/pdf', [ReportController::class, 'exportPdf'])->name('owner.reports.export.pdf');
     Route::get('/reports/export/excel', [ReportController::class, 'exportExcel'])->name('owner.reports.export.excel');
 
+    Route::get('/pending', [OwnerPendingPaymentController::class, 'index'])->name('owner.pending.index');
+    Route::put('/pending/{transaction}/settle', [OwnerPendingPaymentController::class, 'settle'])->name('owner.pending.settle');
+
     Route::get('/cashiers', [CashierController::class, 'index'])->name('owner.cashiers.index');
     Route::get('/cashiers/create', [CashierController::class, 'create'])->name('owner.cashiers.create');
     Route::post('/cashiers', [CashierController::class, 'store'])->name('owner.cashiers.store');
@@ -70,6 +75,9 @@ Route::middleware(['auth', 'active', 'cashier'])->group(function () {
         ->name('cashier.transactions.index');
     Route::get('/cashier/transactions/{id}', [TransactionHistoryController::class, 'show'])
         ->name('cashier.transactions.show');
+
+    Route::get('/cashier/pending', [CashierPendingPaymentController::class, 'index'])->name('cashier.pending.index');
+    Route::put('/cashier/pending/{transaction}/settle', [CashierPendingPaymentController::class, 'settle'])->name('cashier.pending.settle');
 
     Route::get('/cashier/expenses', [CashierExpenseController::class, 'index'])->name('cashier.expenses.index');
     Route::post('/cashier/expenses', [CashierExpenseController::class, 'store'])->name('cashier.expenses.store');

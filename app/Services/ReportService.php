@@ -62,12 +62,18 @@ class ReportService
 
         $labaKotor = $omzet - $hpp;
 
+        $paidTotal = (float) Transaction::paid()->whereBetween('created_at', [$start, $end])->sum('total');
+        $unpaidTotal = (float) Transaction::unpaid()->whereBetween('created_at', [$start, $end])->sum('total');
+
         return [
             'omzet' => $omzet,
             'hpp' => $hpp,
             'laba_kotor' => $labaKotor,
             'pengeluaran' => $pengeluaran,
             'laba_bersih' => $labaKotor - $pengeluaran,
+            'paid_total' => $paidTotal,
+            'unpaid_total' => $unpaidTotal,
+            'pending_amount' => $unpaidTotal,
         ];
     }
 

@@ -38,7 +38,7 @@ class CashierDashboardService
             ->map(fn (Transaction $t) => [
                 'id' => $t->id,
                 'invoice_number' => $t->invoice_number,
-                'payment_method' => $t->payment_method->label(),
+                'payment_method' => $t->payment_method?->label() ?? '-',
                 'total' => (float) $t->total,
                 'created_at' => $t->created_at->format('d M Y, H:i'),
             ])

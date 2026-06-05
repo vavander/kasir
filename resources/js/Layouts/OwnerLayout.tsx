@@ -2,6 +2,7 @@ import { Link, router, usePage } from '@inertiajs/react';
 import {
     BarChart3,
     ChevronDown,
+    Clock,
     LayoutDashboard,
     LogOut,
     Menu as MenuIcon,
@@ -23,6 +24,7 @@ const navItems = [
     { label: 'Dashboard', href: 'owner.dashboard', icon: LayoutDashboard },
     { label: 'Menu', href: 'owner.menus.index', icon: ShoppingBag },
     { label: 'Pengeluaran', href: 'owner.expenses.index', icon: Receipt },
+    { label: 'Pending', href: 'owner.pending.index', icon: Clock },
     { label: 'Laporan', href: 'owner.reports.index', icon: BarChart3 },
     { label: 'Kasir', href: 'owner.cashiers.index', icon: Users },
     { label: 'Pengaturan', href: 'owner.settings.index', icon: Settings },

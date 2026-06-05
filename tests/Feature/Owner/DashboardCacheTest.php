@@ -45,6 +45,7 @@ describe('Dashboard caching', function () {
         app(TransactionService::class)->checkout(
             $cashier,
             [['menu_id' => $menu->id, 'qty' => 1]],
+            'Budi',
             PaymentMethod::Cash,
         );
 

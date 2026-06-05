@@ -26,6 +26,9 @@ interface Summary {
     laba_kotor: number;
     pengeluaran: number;
     laba_bersih: number;
+    paid_total: number;
+    unpaid_total: number;
+    pending_amount: number;
 }
 
 interface DailyRow {
@@ -168,6 +171,22 @@ export default function OwnerReportIndex({ report, filters, range }: Props) {
                     <KpiCard title="HPP" value={summary.hpp} icon={TrendingDown} colorClass="text-amber-600" bgClass="bg-amber-100 dark:bg-amber-950" />
                     <KpiCard title="Pengeluaran" value={summary.pengeluaran} icon={Wallet} colorClass="text-rose-600" bgClass="bg-rose-100 dark:bg-rose-950" />
                     <KpiCard title="Laba Bersih" value={summary.laba_bersih} icon={TrendingUp} colorClass="text-indigo-600" bgClass="bg-indigo-100 dark:bg-indigo-950" isNegativeAllowed />
+                </div>
+
+                {/* Payment status breakdown */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="rounded-xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50/50 dark:bg-emerald-950/30 p-4">
+                        <p className="text-xs font-medium text-emerald-700 dark:text-emerald-400 uppercase tracking-wide">Transaksi Lunas</p>
+                        <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">{formatRupiah(summary.paid_total)}</p>
+                    </div>
+                    <div className="rounded-xl border border-amber-200 dark:border-amber-900 bg-amber-50/50 dark:bg-amber-950/30 p-4">
+                        <p className="text-xs font-medium text-amber-700 dark:text-amber-400 uppercase tracking-wide">Transaksi Belum Bayar</p>
+                        <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">{formatRupiah(summary.unpaid_total)}</p>
+                    </div>
+                    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4">
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Total Pending</p>
+                        <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">{formatRupiah(summary.pending_amount)}</p>
+                    </div>
                 </div>
 
                 {/* Daily breakdown */}

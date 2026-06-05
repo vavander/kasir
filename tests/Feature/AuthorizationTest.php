@@ -19,11 +19,13 @@ $ownerRoutes = [
     'owner.reports.export.excel',
     'owner.cashiers.index',
     'owner.cashiers.create',
+    'owner.pending.index',
 ];
 
 $cashierRoutes = [
     'cashier.dashboard',
     'cashier.pos',
+    'cashier.pending.index',
     'cashier.transactions.index',
     'cashier.expenses.index',
 ];
