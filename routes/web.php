@@ -9,6 +9,7 @@ use App\Http\Controllers\Cashier\TransactionHistoryController;
 use App\Http\Controllers\Owner\DashboardController;
 use App\Http\Controllers\Owner\ExpenseController as OwnerExpenseController;
 use App\Http\Controllers\Owner\MenuController;
+use App\Http\Controllers\Owner\ReportController;
 use App\Http\Controllers\Owner\TransactionController as OwnerTransactionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,10 @@ Route::middleware(['auth', 'active', 'owner'])->group(function () {
     Route::post('/expenses', [OwnerExpenseController::class, 'store'])->name('owner.expenses.store');
     Route::put('/expenses/{expense}', [OwnerExpenseController::class, 'update'])->name('owner.expenses.update');
     Route::delete('/expenses/{expense}', [OwnerExpenseController::class, 'destroy'])->name('owner.expenses.destroy');
+
+    Route::get('/reports', [ReportController::class, 'index'])->name('owner.reports.index');
+    Route::get('/reports/export/pdf', [ReportController::class, 'exportPdf'])->name('owner.reports.export.pdf');
+    Route::get('/reports/export/excel', [ReportController::class, 'exportExcel'])->name('owner.reports.export.excel');
 });
 
 // Cashier routes
