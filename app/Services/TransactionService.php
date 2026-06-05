@@ -25,14 +25,20 @@ class TransactionService
         ?PaymentMethod $paymentMethod,
         bool $payLater = false,
     ): Transaction {
+        $customerName = trim($customerName);
+
         // Load every referenced menu in a single query (avoids N+1).
         $menus = Menu::whereIn('id', array_column($items, 'menu_id'))->get()->keyBy('id');
 
         $transaction = DB::transaction(function () use ($cashier, $items, $customerName, $paymentMethod, $payLater, $menus) {
-            $invoiceNumber = $this->invoiceService->generate();
+            // Pay-later orders for a customer who already has an open (unpaid)
+            // tab are merged into that tab instead of creating a new bill.
+            $transaction = $payLater
+                ? $this->findOpenTab($cashier, $customerName)
+                : null;
 
-            $transaction = Transaction::create([
-                'invoice_number' => $invoiceNumber,
+            $transaction ??= Transaction::create([
+                'invoice_number' => $this->invoiceService->generate(),
                 'cashier_id' => $cashier->id,
                 'customer_name' => $customerName,
                 'payment_method' => $payLater ? null : $paymentMethod?->value,
@@ -43,7 +49,7 @@ class TransactionService
                 'total' => 0,
             ]);
 
-            $subtotal = 0;
+            $addedSubtotal = 0;
             $rows = [];
 
             foreach ($items as $item) {
@@ -61,14 +67,15 @@ class TransactionService
                     'subtotal' => $itemSubtotal,
                 ];
 
-                $subtotal += $itemSubtotal;
+                $addedSubtotal += $itemSubtotal;
             }
 
             $transaction->items()->createMany($rows);
 
+            $newSubtotal = (float) $transaction->subtotal + $addedSubtotal;
             $transaction->update([
-                'subtotal' => $subtotal,
-                'total' => $subtotal,
+                'subtotal' => $newSubtotal,
+                'total' => $newSubtotal,
             ]);
 
             return $transaction->load('items', 'cashier');
@@ -77,5 +84,18 @@ class TransactionService
         DashboardService::forgetTodayCache();
 
         return $transaction;
+    }
+
+    /**
+     * Find this cashier's existing open (unpaid) tab for a customer, if any.
+     */
+    private function findOpenTab(User $cashier, string $customerName): ?Transaction
+    {
+        return Transaction::unpaid()
+            ->where('cashier_id', $cashier->id)
+            ->whereRaw('LOWER(customer_name) = ?', [mb_strtolower($customerName)])
+            ->lockForUpdate()
+            ->latest('id')
+            ->first();
     }
 }

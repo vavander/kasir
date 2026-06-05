@@ -135,6 +135,62 @@ describe('Checkout — Pay Later', function () {
             'total' => 40000,
         ]);
     });
+
+    it('merges a new pay-later order into the same customer open tab', function () {
+        $cashier = User::factory()->cashier()->create();
+        $menu = Menu::factory()->create(['selling_price' => 10000]);
+
+        // First pay-later order for Budi
+        $first = $this->actingAs($cashier)->postJson(route('cashier.pos.checkout'), [
+            'items' => [['menu_id' => $menu->id, 'qty' => 1]],
+            'customer_name' => 'Budi',
+            'payment_status' => 'unpaid',
+        ])->json('transaction.id');
+
+        // Second pay-later order for the same customer
+        $second = $this->actingAs($cashier)->postJson(route('cashier.pos.checkout'), [
+            'items' => [['menu_id' => $menu->id, 'qty' => 2]],
+            'customer_name' => 'budi', // case-insensitive match
+            'payment_status' => 'unpaid',
+        ])->json('transaction.id');
+
+        expect($second)->toBe($first);
+        $this->assertDatabaseCount('transactions', 1);
+        $this->assertDatabaseCount('transaction_items', 2);
+        $this->assertDatabaseHas('transactions', ['id' => $first, 'total' => 30000]);
+    });
+
+    it('does not merge a pay-now order into an open tab', function () {
+        $cashier = User::factory()->cashier()->create();
+        $menu = Menu::factory()->create(['selling_price' => 10000]);
+        $tab = Transaction::factory()->unpaid()->create(['cashier_id' => $cashier->id, 'customer_name' => 'Budi', 'total' => 10000]);
+
+        $this->actingAs($cashier)->postJson(route('cashier.pos.checkout'), [
+            'items' => [['menu_id' => $menu->id, 'qty' => 1]],
+            'customer_name' => 'Budi',
+            'payment_status' => 'paid',
+            'payment_method' => 'cash',
+            'paid_amount' => 10000,
+        ])->assertStatus(201);
+
+        $this->assertDatabaseCount('transactions', 2); // separate paid transaction
+        expect($tab->refresh()->payment_status)->toBe(PaymentStatus::Unpaid);
+    });
+
+    it('keeps separate tabs for different customers', function () {
+        $cashier = User::factory()->cashier()->create();
+        $menu = Menu::factory()->create(['selling_price' => 10000]);
+
+        foreach (['Budi', 'Siti'] as $name) {
+            $this->actingAs($cashier)->postJson(route('cashier.pos.checkout'), [
+                'items' => [['menu_id' => $menu->id, 'qty' => 1]],
+                'customer_name' => $name,
+                'payment_status' => 'unpaid',
+            ]);
+        }
+
+        $this->assertDatabaseCount('transactions', 2);
+    });
 });
 
 describe('Checkout — Validation', function () {
