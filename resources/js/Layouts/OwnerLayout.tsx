@@ -84,8 +84,12 @@ export default function OwnerLayout({ children }: PropsWithChildren) {
                             onClick={() => setUserMenuOpen(!userMenuOpen)}
                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                         >
-                            <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center shrink-0">
-                                <User className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                            <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center shrink-0 overflow-hidden">
+                                {auth.user.avatar_url ? (
+                                    <img src={auth.user.avatar_url} alt={auth.user.name} className="w-full h-full object-cover" />
+                                ) : (
+                                    <User className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                                )}
                             </div>
                             <div className="flex-1 text-left min-w-0">
                                 <p className="text-sm font-medium text-gray-900 dark:text-white truncate">

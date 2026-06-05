@@ -20,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'avatar',
         'password',
         'role',
         'status',
@@ -31,6 +32,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $appends = [
+        'avatar_url',
+    ];
+
     protected function casts(): array
     {
         return [
@@ -40,6 +45,15 @@ class User extends Authenticatable
             'role' => UserRole::class,
             'status' => UserStatus::class,
         ];
+    }
+
+    public function getAvatarUrlAttribute(): ?string
+    {
+        if (! $this->avatar) {
+            return null;
+        }
+
+        return asset('storage/'.$this->avatar);
     }
 
     public function isOwner(): bool
