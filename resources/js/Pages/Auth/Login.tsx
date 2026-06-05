@@ -1,5 +1,5 @@
 import { Head, useForm } from '@inertiajs/react';
-import { Eye, EyeOff, Loader2, UtensilsCrossed } from 'lucide-react';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
@@ -42,12 +42,10 @@ export default function Login({
                     </div>
 
                     <div className="relative z-10 text-center">
-                        <div className="inline-flex items-center justify-center w-20 h-20 bg-white/15 rounded-2xl mb-6 backdrop-blur-sm border border-white/20">
-                            <UtensilsCrossed className="w-10 h-10 text-white" />
-                        </div>
+                        <img src="/logo.png" alt="Kedai Cappa" className="w-28 h-28 rounded-full object-contain mx-auto mb-6 shadow-xl" />
 
                         <h1 className="text-4xl font-bold text-white mb-3 tracking-tight">
-                            Restaurant POS
+                            Kedai Cappa
                         </h1>
                         <p className="text-orange-200 text-lg mb-8 max-w-xs">
                             Kelola restoran Anda dengan lebih mudah dan efisien
@@ -76,11 +74,9 @@ export default function Login({
                     <div className="w-full max-w-md">
                         {/* Mobile logo */}
                         <div className="lg:hidden flex items-center gap-3 mb-8">
-                            <div className="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center">
-                                <UtensilsCrossed className="w-5 h-5 text-white" />
-                            </div>
+                            <img src="/logo.png" alt="Kedai Cappa" className="w-10 h-10 rounded-full object-contain" />
                             <span className="text-xl font-bold text-gray-900 dark:text-white">
-                                Restaurant POS
+                                Kedai Cappa
                             </span>
                         </div>
 
@@ -190,7 +186,7 @@ export default function Login({
                         </form>
 
                         <p className="mt-8 text-center text-xs text-gray-400 dark:text-gray-600">
-                            © {new Date().getFullYear()} Restaurant POS. All rights reserved.
+                            © {new Date().getFullYear()} Kedai Cappa. All rights reserved.
                         </p>
                     </div>
                 </div>

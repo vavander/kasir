@@ -10,7 +10,6 @@ import {
     Settings,
     ShoppingBag,
     Users,
-    UtensilsCrossed,
     User,
     X,
 } from 'lucide-react';
@@ -52,10 +51,8 @@ export default function OwnerLayout({ children }: PropsWithChildren) {
                     <MenuIcon className="w-5 h-5" />
                 </button>
                 <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 bg-orange-600 rounded-lg flex items-center justify-center">
-                        <UtensilsCrossed className="w-3.5 h-3.5 text-white" />
-                    </div>
-                    <span className="font-semibold text-gray-900 dark:text-white text-sm">Restaurant POS</span>
+                    <img src="/logo.png" alt="Kedai Cappa" className="w-8 h-8 rounded-full object-contain" />
+                    <span className="font-semibold text-gray-900 dark:text-white text-sm">Kedai Cappa</span>
                 </div>
                 <ThemeToggle className="ml-auto" />
             </header>
@@ -75,11 +72,9 @@ export default function OwnerLayout({ children }: PropsWithChildren) {
             >
                 {/* Logo */}
                 <div className="h-16 flex items-center gap-3 px-6 border-b border-slate-800">
-                    <div className="w-8 h-8 bg-orange-500 rounded-xl flex items-center justify-center shrink-0">
-                        <UtensilsCrossed className="w-4 h-4 text-white" />
-                    </div>
+                    <img src="/logo.png" alt="Kedai Cappa" className="w-9 h-9 rounded-full object-contain shrink-0" />
                     <span className="font-semibold text-white text-sm truncate flex-1">
-                        Restaurant POS
+                        Kedai Cappa
                     </span>
                     <button
                         onClick={() => setSidebarOpen(false)}

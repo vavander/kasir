@@ -6,7 +6,6 @@ import {
     LogOut,
     Receipt,
     ShoppingCart,
-    UtensilsCrossed,
     User,
 } from 'lucide-react';
 import { PropsWithChildren, useState } from 'react';
@@ -40,11 +39,9 @@ export default function CashierLayout({ children }: PropsWithChildren) {
             <header className="h-14 bg-slate-900 border-b border-slate-800 flex items-center px-4 gap-4 fixed top-0 inset-x-0 z-30">
                 {/* Logo */}
                 <div className="flex items-center gap-2.5 mr-4">
-                    <div className="w-7 h-7 bg-orange-500 rounded-xl flex items-center justify-center shrink-0">
-                        <UtensilsCrossed className="w-3.5 h-3.5 text-white" />
-                    </div>
+                    <img src="/logo.png" alt="Kedai Cappa" className="w-8 h-8 rounded-full object-contain shrink-0" />
                     <span className="font-semibold text-white text-sm hidden sm:block">
-                        Restaurant POS
+                        Kedai Cappa
                     </span>
                 </div>
 
