@@ -23,6 +23,8 @@ export default function OwnerPendingIndex({ pending, filters }: Props) {
                     indexRoute={route('owner.pending.index')}
                     settleRouteName="owner.pending.settle"
                     showCashier
+                    canDelete
+                    deleteRouteName="owner.pending.destroy"
                 />
             </div>
         </OwnerLayout>

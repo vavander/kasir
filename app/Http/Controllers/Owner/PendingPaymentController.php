@@ -8,6 +8,7 @@ use App\Enums\PaymentStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Transaction\SettlePaymentRequest;
 use App\Models\Transaction;
+use App\Services\DashboardService;
 use App\Services\PaymentService;
 use App\Services\PendingPaymentService;
 use Illuminate\Http\RedirectResponse;
@@ -40,5 +41,18 @@ class PendingPaymentController extends Controller
         $this->paymentService->settle($transaction, $request->getPaymentMethod(), (float) $request->validated('paid_amount'));
 
         return back()->with('success', 'Pembayaran berhasil diselesaikan.');
+    }
+
+    /**
+     * Owner-only: cancel/delete an unpaid order (paid orders are protected).
+     */
+    public function destroy(Transaction $transaction): RedirectResponse
+    {
+        abort_unless($transaction->payment_status === PaymentStatus::Unpaid, 404);
+
+        $transaction->delete(); // transaction_items cascade
+        DashboardService::forgetTodayCache();
+
+        return back()->with('success', 'Pesanan belum bayar berhasil dihapus.');
     }
 }

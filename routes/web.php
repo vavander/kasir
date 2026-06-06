@@ -53,6 +53,7 @@ Route::middleware(['auth', 'active', 'owner'])->group(function () {
 
     Route::get('/pending', [OwnerPendingPaymentController::class, 'index'])->name('owner.pending.index');
     Route::put('/pending/{transaction}/settle', [OwnerPendingPaymentController::class, 'settle'])->name('owner.pending.settle');
+    Route::delete('/pending/{transaction}', [OwnerPendingPaymentController::class, 'destroy'])->name('owner.pending.destroy');
 
     Route::get('/cashiers', [CashierController::class, 'index'])->name('owner.cashiers.index');
     Route::get('/cashiers/create', [CashierController::class, 'create'])->name('owner.cashiers.create');

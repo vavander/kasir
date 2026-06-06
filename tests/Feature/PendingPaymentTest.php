@@ -114,6 +114,34 @@ describe('Settle Payment', function () {
         ])->assertStatus(404);
     });
 
+    it('owner can delete an unpaid order and its items', function () {
+        $owner = User::factory()->owner()->create();
+        $cashier = User::factory()->cashier()->create();
+        $trx = Transaction::factory()->unpaid()->create(['cashier_id' => $cashier->id]);
+        \App\Models\TransactionItem::factory()->create(['transaction_id' => $trx->id]);
+
+        $this->actingAs($owner)->delete(route('owner.pending.destroy', $trx))->assertRedirect();
+
+        $this->assertDatabaseMissing('transactions', ['id' => $trx->id]);
+        $this->assertDatabaseMissing('transaction_items', ['transaction_id' => $trx->id]);
+    });
+
+    it('owner cannot delete a paid transaction', function () {
+        $owner = User::factory()->owner()->create();
+        $trx = Transaction::factory()->create(); // paid
+
+        $this->actingAs($owner)->delete(route('owner.pending.destroy', $trx))->assertStatus(404);
+        $this->assertDatabaseHas('transactions', ['id' => $trx->id]);
+    });
+
+    it('cashier cannot delete a pending order', function () {
+        $cashier = User::factory()->cashier()->create();
+        $trx = Transaction::factory()->unpaid()->create(['cashier_id' => $cashier->id]);
+
+        $this->actingAs($cashier)->delete(route('owner.pending.destroy', $trx))->assertStatus(403);
+        $this->assertDatabaseHas('transactions', ['id' => $trx->id]);
+    });
+
     it('settle requires a payment method', function () {
         $cashier = User::factory()->cashier()->create();
         $trx = Transaction::factory()->unpaid()->create(['cashier_id' => $cashier->id]);

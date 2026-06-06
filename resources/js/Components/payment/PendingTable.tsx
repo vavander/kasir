@@ -1,11 +1,22 @@
 import { router } from '@inertiajs/react';
-import { Clock, Search, Wallet } from 'lucide-react';
+import { Clock, Search, Trash2, Wallet } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import EmptyState from '@/Components/EmptyState';
 import SettlePaymentModal from '@/Components/payment/SettlePaymentModal';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Badge } from '@/Components/ui/badge';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/Components/ui/alert-dialog';
 import { formatRupiah } from '@/lib/formatters';
 
 interface PendingRow {
@@ -24,9 +35,11 @@ interface Props {
     indexRoute: string;
     settleRouteName: string;
     showCashier?: boolean;
+    canDelete?: boolean;
+    deleteRouteName?: string;
 }
 
-export default function PendingTable({ pending, filters, indexRoute, settleRouteName, showCashier = false }: Props) {
+export default function PendingTable({ pending, filters, indexRoute, settleRouteName, showCashier = false, canDelete = false, deleteRouteName }: Props) {
     const [search, setSearch] = useState(filters.search ?? '');
     const [date, setDate] = useState(filters.date ?? '');
     const [settling, setSettling] = useState<PendingRow | null>(null);
@@ -61,7 +74,7 @@ export default function PendingTable({ pending, filters, indexRoute, settleRoute
                                 {showCashier && <th className="text-left px-4 py-3 font-medium text-muted-foreground">Kasir</th>}
                                 <th className="text-center px-4 py-3 font-medium text-muted-foreground">Status</th>
                                 <th className="text-right px-4 py-3 font-medium text-muted-foreground">Total</th>
-                                <th className="text-center px-4 py-3 font-medium text-muted-foreground w-32">Aksi</th>
+                                <th className="text-center px-4 py-3 font-medium text-muted-foreground w-44">Aksi</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -80,10 +93,38 @@ export default function PendingTable({ pending, filters, indexRoute, settleRoute
                                         {showCashier && <td className="px-4 py-3 text-gray-700 dark:text-gray-300">{t.cashier_name}</td>}
                                         <td className="px-4 py-3 text-center"><Badge variant="warning">BELUM BAYAR</Badge></td>
                                         <td className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-white">{formatRupiah(t.total)}</td>
-                                        <td className="px-4 py-3 text-center">
-                                            <Button size="sm" className="gap-1.5" onClick={() => setSettling(t)}>
-                                                <Wallet className="w-3.5 h-3.5" /> Lunasi
-                                            </Button>
+                                        <td className="px-4 py-3">
+                                            <div className="flex items-center justify-center gap-1.5">
+                                                <Button size="sm" className="gap-1.5" onClick={() => setSettling(t)}>
+                                                    <Wallet className="w-3.5 h-3.5" /> Lunasi
+                                                </Button>
+                                                {canDelete && deleteRouteName && (
+                                                    <AlertDialog>
+                                                        <AlertDialogTrigger asChild>
+                                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950" title="Hapus pesanan">
+                                                                <Trash2 className="w-3.5 h-3.5" />
+                                                            </Button>
+                                                        </AlertDialogTrigger>
+                                                        <AlertDialogContent>
+                                                            <AlertDialogHeader>
+                                                                <AlertDialogTitle>Hapus pesanan belum bayar?</AlertDialogTitle>
+                                                                <AlertDialogDescription>
+                                                                    Pesanan {t.invoice_number} ({t.customer_name ?? '-'}) sebesar {formatRupiah(t.total)} akan dihapus permanen. Tindakan ini hanya untuk pesanan yang belum lunas.
+                                                                </AlertDialogDescription>
+                                                            </AlertDialogHeader>
+                                                            <AlertDialogFooter>
+                                                                <AlertDialogCancel>Batal</AlertDialogCancel>
+                                                                <AlertDialogAction
+                                                                    className="bg-rose-600 hover:bg-rose-700"
+                                                                    onClick={() => router.delete(route(deleteRouteName as any, t.id), { preserveScroll: true })}
+                                                                >
+                                                                    Hapus
+                                                                </AlertDialogAction>
+                                                            </AlertDialogFooter>
+                                                        </AlertDialogContent>
+                                                    </AlertDialog>
+                                                )}
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
