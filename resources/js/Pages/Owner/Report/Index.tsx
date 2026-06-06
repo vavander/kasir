@@ -1,5 +1,5 @@
 import { Head, router } from '@inertiajs/react';
-import { Download, FileSpreadsheet, FileText, TrendingDown, TrendingUp, Wallet, Coins } from 'lucide-react';
+import { Download, ExternalLink, FileSpreadsheet, FileText, TrendingDown, TrendingUp, Wallet, Coins, X } from 'lucide-react';
 import { useState } from 'react';
 import OwnerLayout from '@/Layouts/OwnerLayout';
 import EmptyState from '@/Components/EmptyState';
@@ -70,6 +70,7 @@ export default function OwnerReportIndex({ report, filters, range }: Props) {
     const [month, setMonth] = useState(filters.month ?? monthStr());
     const [start, setStart] = useState(filters.start ?? range.start);
     const [end, setEnd] = useState(filters.end ?? range.end);
+    const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
     const buildQuery = () => {
         if (mode === 'monthly') return { mode, month };
@@ -100,11 +101,9 @@ export default function OwnerReportIndex({ report, filters, range }: Props) {
                         <p className="text-sm text-muted-foreground mt-0.5">Periode: {range.label}</p>
                     </div>
                     <div className="flex items-center gap-2">
-                        <a href={exportUrl('pdf')} target="_blank" rel="noopener noreferrer">
-                            <Button variant="outline" className="gap-2">
-                                <FileText className="w-4 h-4" /> PDF
-                            </Button>
-                        </a>
+                        <Button variant="outline" className="gap-2" onClick={() => setPdfUrl(exportUrl('pdf'))}>
+                            <FileText className="w-4 h-4" /> PDF
+                        </Button>
                         <a href={exportUrl('excel')}>
                             <Button variant="outline" className="gap-2">
                                 <FileSpreadsheet className="w-4 h-4" /> Excel
@@ -270,6 +269,27 @@ export default function OwnerReportIndex({ report, filters, range }: Props) {
                     </div>
                 </div>
             </div>
+
+            {/* PDF preview modal (same page) */}
+            {pdfUrl && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setPdfUrl(null)} />
+                    <div className="relative w-full max-w-4xl h-[90vh] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+                        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-800">
+                            <h2 className="text-sm font-semibold text-gray-900 dark:text-white">Pratinjau Laporan PDF</h2>
+                            <div className="flex items-center gap-1">
+                                <a href={pdfUrl} target="_blank" rel="noopener noreferrer" title="Buka di tab baru">
+                                    <Button variant="ghost" size="icon" className="h-8 w-8"><ExternalLink className="w-4 h-4" /></Button>
+                                </a>
+                                <Button variant="ghost" size="icon" className="h-8 w-8" title="Tutup" onClick={() => setPdfUrl(null)}>
+                                    <X className="w-4 h-4" />
+                                </Button>
+                            </div>
+                        </div>
+                        <iframe src={pdfUrl} title="Laporan PDF" className="flex-1 w-full bg-white" />
+                    </div>
+                </div>
+            )}
         </OwnerLayout>
     );
 }
