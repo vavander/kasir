@@ -37,7 +37,7 @@ describe('Database Seeders', function () {
         $setting = Setting::first();
 
         expect($setting)->not->toBeNull();
-        expect($setting->store_name)->toBe('My Restaurant');
+        expect($setting->store_name)->toBe('Kedai Cappadocia');
         expect($setting->address)->toBe('Indonesia');
     });
 
