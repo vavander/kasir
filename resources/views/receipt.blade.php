@@ -26,10 +26,23 @@
         .summary .value { width: 45%; text-align: right; }
         .total-row { font-weight: bold; font-size: 12px; }
         .footer { margin-top: 8px; text-align: center; font-size: 10px; }
+        .logo { width: 60px; height: 60px; margin-bottom: 4px; }
     </style>
 </head>
+@php
+    // dompdf needs the GD extension to embed raster images; skip the logo if it's
+    // unavailable so the receipt still prints (logo appears once GD is enabled).
+    $logoData = null;
+    $logoPath = public_path('logo.png');
+    if (extension_loaded('gd') && is_file($logoPath)) {
+        $logoData = 'data:image/png;base64,'.base64_encode(file_get_contents($logoPath));
+    }
+@endphp
 <body>
     <div class="center">
+        @if($logoData)
+            <img class="logo" src="{{ $logoData }}" alt="Logo">
+        @endif
         <div class="store-name">{{ $setting->store_name }}</div>
         @if($setting->address)
             <div>{{ $setting->address }}</div>

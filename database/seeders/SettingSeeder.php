@@ -14,7 +14,7 @@ class SettingSeeder extends Seeder
         Setting::firstOrCreate(
             ['id' => 1],
             [
-                'store_name' => 'My Restaurant',
+                'store_name' => 'Kedai Cappadocia',
                 'logo' => null,
                 'address' => 'Indonesia',
                 'phone' => null,
