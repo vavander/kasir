@@ -48,7 +48,8 @@ class ReportController extends Controller
             'generatedAt' => now(),
         ])->setPaper('a4', 'portrait');
 
-        return $pdf->download('laporan-'.$range['start']->toDateString().'-'.$range['end']->toDateString().'.pdf');
+        // Stream inline so the browser previews it (opens in a new tab) instead of downloading.
+        return $pdf->stream('laporan-'.$range['start']->toDateString().'-'.$range['end']->toDateString().'.pdf');
     }
 
     public function exportExcel(ReportFilterRequest $request): StreamedResponse

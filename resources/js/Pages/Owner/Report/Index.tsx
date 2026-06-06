@@ -100,7 +100,7 @@ export default function OwnerReportIndex({ report, filters, range }: Props) {
                         <p className="text-sm text-muted-foreground mt-0.5">Periode: {range.label}</p>
                     </div>
                     <div className="flex items-center gap-2">
-                        <a href={exportUrl('pdf')}>
+                        <a href={exportUrl('pdf')} target="_blank" rel="noopener noreferrer">
                             <Button variant="outline" className="gap-2">
                                 <FileText className="w-4 h-4" /> PDF
                             </Button>
