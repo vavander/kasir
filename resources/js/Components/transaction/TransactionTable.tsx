@@ -2,6 +2,7 @@ import { Link, router } from '@inertiajs/react';
 import { Eye, Printer, Receipt, Search } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import EmptyState from '@/Components/EmptyState';
+import ReceiptModal from '@/Components/ReceiptModal';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Badge } from '@/Components/ui/badge';
@@ -54,6 +55,7 @@ export default function TransactionTable({
 }: TransactionTableProps) {
     const [search, setSearch] = useState(filters.search ?? '');
     const [date, setDate] = useState(filters.date ?? '');
+    const [receiptUrl, setReceiptUrl] = useState<string | null>(null);
     const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
@@ -157,15 +159,15 @@ export default function TransactionTable({
                                                 </Button>
                                             </Link>
                                             {showReceiptButton && (
-                                                <a
-                                                    href={route('transactions.receipt', t.id)}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-8 w-8"
+                                                    title="Cetak struk"
+                                                    onClick={() => setReceiptUrl(route('transactions.receipt', t.id))}
                                                 >
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                                                        <Printer className="w-3.5 h-3.5" />
-                                                    </Button>
-                                                </a>
+                                                    <Printer className="w-3.5 h-3.5" />
+                                                </Button>
                                             )}
                                         </div>
                                     </td>
@@ -201,6 +203,8 @@ export default function TransactionTable({
                     </div>
                 </div>
             )}
+
+            <ReceiptModal url={receiptUrl} onClose={() => setReceiptUrl(null)} />
         </div>
     );
 }

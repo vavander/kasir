@@ -1,7 +1,9 @@
 import { CheckCircle2, Printer, ShoppingCart } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/Components/ui/button';
 import { Badge } from '@/Components/ui/badge';
 import { Separator } from '@/Components/ui/separator';
+import ReceiptModal from '@/Components/ReceiptModal';
 import { formatRupiah } from '@/lib/formatters';
 
 interface TransactionResult {
@@ -24,10 +26,11 @@ interface SuccessScreenProps {
 
 export default function SuccessScreen({ transaction, paidAmount, onNewTransaction }: SuccessScreenProps) {
     const change = Math.max(0, paidAmount - transaction.total);
+    const [receiptUrl, setReceiptUrl] = useState<string | null>(null);
 
     const handlePrint = () => {
         const params = paidAmount > 0 ? `?paid_amount=${paidAmount}` : '';
-        window.open(`/transactions/${transaction.id}/receipt${params}`, '_blank');
+        setReceiptUrl(`/transactions/${transaction.id}/receipt${params}`);
     };
 
     return (
@@ -118,6 +121,8 @@ export default function SuccessScreen({ transaction, paidAmount, onNewTransactio
                     </Button>
                 </div>
             </div>
+
+            <ReceiptModal url={receiptUrl} onClose={() => setReceiptUrl(null)} />
         </div>
     );
 }

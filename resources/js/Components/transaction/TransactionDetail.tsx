@@ -1,7 +1,9 @@
 import { Link, router } from '@inertiajs/react';
 import { ChevronLeft, Printer } from 'lucide-react';
+import { useState } from 'react';
 import { Badge } from '@/Components/ui/badge';
 import { Button } from '@/Components/ui/button';
+import ReceiptModal from '@/Components/ReceiptModal';
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 import { Separator } from '@/Components/ui/separator';
 import { formatRupiah } from '@/lib/formatters';
@@ -36,6 +38,8 @@ const paymentBadge: Record<string, 'success' | 'default' | 'secondary'> = {
 };
 
 export default function TransactionDetail({ transaction, backRoute, showHpp = false }: TransactionDetailProps) {
+    const [receiptUrl, setReceiptUrl] = useState<string | null>(null);
+
     return (
         <div className="space-y-6 max-w-2xl">
             {/* Back button */}
@@ -52,16 +56,10 @@ export default function TransactionDetail({ transaction, backRoute, showHpp = fa
                     </h1>
                     <p className="text-sm text-muted-foreground mt-0.5">{transaction.created_at}</p>
                 </div>
-                <a
-                    href={route('transactions.receipt', transaction.id)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <Button variant="outline" size="sm" className="gap-2 shrink-0">
-                        <Printer className="w-4 h-4" />
-                        Cetak Struk
-                    </Button>
-                </a>
+                <Button variant="outline" size="sm" className="gap-2 shrink-0" onClick={() => setReceiptUrl(route('transactions.receipt', transaction.id))}>
+                    <Printer className="w-4 h-4" />
+                    Cetak Struk
+                </Button>
             </div>
 
             {/* Meta info */}
@@ -136,6 +134,8 @@ export default function TransactionDetail({ transaction, backRoute, showHpp = fa
                     </div>
                 </CardContent>
             </Card>
+
+            <ReceiptModal url={receiptUrl} onClose={() => setReceiptUrl(null)} />
         </div>
     );
 }
