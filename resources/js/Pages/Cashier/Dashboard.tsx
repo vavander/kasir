@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import CashierLayout from '@/Layouts/CashierLayout';
 import EmptyState from '@/Components/EmptyState';
+import TiltCard from '@/Components/TiltCard';
 import { Card, CardContent } from '@/Components/ui/card';
 import { Badge } from '@/Components/ui/badge';
 import { formatRupiah } from '@/lib/formatters';
@@ -66,19 +67,21 @@ export default function CashierDashboard({ summary, recentTransactions }: Props)
                     {cards.map((c) => {
                         const Icon = c.icon;
                         return (
-                            <Card key={c.label}>
-                                <CardContent className="p-5">
-                                    <div className="flex items-start justify-between">
-                                        <div className="min-w-0">
-                                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide truncate">{c.label}</p>
-                                            <p className="text-2xl font-bold text-gray-900 dark:text-white mt-2 truncate">{c.value}</p>
+                            <TiltCard key={c.label}>
+                                <Card>
+                                    <CardContent className="p-5">
+                                        <div className="flex items-start justify-between">
+                                            <div className="min-w-0">
+                                                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide truncate">{c.label}</p>
+                                                <p className="text-2xl font-bold text-gray-900 dark:text-white mt-2 truncate">{c.value}</p>
+                                            </div>
+                                            <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ml-3 ${c.bg}`}>
+                                                <Icon className={`w-5 h-5 ${c.color}`} />
+                                            </div>
                                         </div>
-                                        <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ml-3 ${c.bg}`}>
-                                            <Icon className={`w-5 h-5 ${c.color}`} />
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
+                                    </CardContent>
+                                </Card>
+                            </TiltCard>
                         );
                     })}
                 </div>

@@ -8,6 +8,7 @@ import SalesChart from '@/Components/dashboard/SalesChart';
 import ExpenseChart from '@/Components/dashboard/ExpenseChart';
 import TopMenuList from '@/Components/dashboard/TopMenuList';
 import RecentActivity from '@/Components/dashboard/RecentActivity';
+import TiltCard from '@/Components/TiltCard';
 import { formatRupiah } from '@/lib/formatters';
 import { PageProps } from '@/types';
 
@@ -125,21 +126,22 @@ export default function Dashboard({
                 {/* KPI Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                     {kpiConfig.map((kpi) => (
-                        <KpiCard
-                            key={kpi.key}
-                            title={kpi.title}
-                            value={summary[kpi.key]}
-                            icon={kpi.icon}
-                            colorClass={kpi.colorClass}
-                            bgClass={kpi.bgClass}
-                            isNegativeAllowed={kpi.isNegativeAllowed}
-                        />
+                        <TiltCard key={kpi.key}>
+                            <KpiCard
+                                title={kpi.title}
+                                value={summary[kpi.key]}
+                                icon={kpi.icon}
+                                colorClass={kpi.colorClass}
+                                bgClass={kpi.bgClass}
+                                isNegativeAllowed={kpi.isNegativeAllowed}
+                            />
+                        </TiltCard>
                     ))}
                 </div>
 
                 {/* Pending orders */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="rounded-xl border border-amber-200 dark:border-amber-900 bg-amber-50/50 dark:bg-amber-950/30 p-5 flex items-center justify-between">
+                    <TiltCard className="rounded-xl border border-amber-200 dark:border-amber-900 bg-amber-50/50 dark:bg-amber-950/30 p-5 flex items-center justify-between">
                         <div>
                             <p className="text-xs font-medium text-amber-700 dark:text-amber-400 uppercase tracking-wide">Pesanan Belum Bayar</p>
                             <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{pending.count}</p>
@@ -147,8 +149,8 @@ export default function Dashboard({
                         <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900 flex items-center justify-center">
                             <Clock className="w-6 h-6 text-amber-600 dark:text-amber-400" />
                         </div>
-                    </div>
-                    <div className="rounded-xl border border-amber-200 dark:border-amber-900 bg-amber-50/50 dark:bg-amber-950/30 p-5 flex items-center justify-between">
+                    </TiltCard>
+                    <TiltCard className="rounded-xl border border-amber-200 dark:border-amber-900 bg-amber-50/50 dark:bg-amber-950/30 p-5 flex items-center justify-between">
                         <div>
                             <p className="text-xs font-medium text-amber-700 dark:text-amber-400 uppercase tracking-wide">Nilai Belum Bayar</p>
                             <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1 truncate" title={formatRupiah(pending.value)}>{formatRupiah(pending.value)}</p>
@@ -156,7 +158,7 @@ export default function Dashboard({
                         <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900 flex items-center justify-center">
                             <HandCoins className="w-6 h-6 text-amber-600 dark:text-amber-400" />
                         </div>
-                    </div>
+                    </TiltCard>
                 </div>
 
                 {/* Charts */}
