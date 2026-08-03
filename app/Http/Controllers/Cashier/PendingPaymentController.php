@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Cashier;
 
 use App\Enums\PaymentStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Transaction\BulkSettlePaymentRequest;
 use App\Http\Requests\Transaction\SettlePaymentRequest;
 use App\Models\Transaction;
 use App\Services\PaymentService;
@@ -41,5 +42,22 @@ class PendingPaymentController extends Controller
         $this->paymentService->settle($transaction, $request->getPaymentMethod(), (float) $request->validated('paid_amount'));
 
         return back()->with('success', 'Pembayaran berhasil diselesaikan.');
+    }
+
+    /**
+     * Settle several unpaid orders at once (one person pays for multiple tabs).
+     */
+    public function settleBulk(BulkSettlePaymentRequest $request): RedirectResponse
+    {
+        $transactions = Transaction::query()
+            ->whereIn('id', $request->getTransactionIds())
+            ->where('payment_status', PaymentStatus::Unpaid->value)
+            ->get();
+
+        abort_if($transactions->isEmpty(), 404);
+
+        $this->paymentService->settleMany($transactions, $request->getPaymentMethod());
+
+        return back()->with('success', $transactions->count().' pesanan berhasil dilunasi.');
     }
 }

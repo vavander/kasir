@@ -52,6 +52,7 @@ Route::middleware(['auth', 'active', 'owner'])->group(function () {
     Route::get('/reports/export/excel', [ReportController::class, 'exportExcel'])->name('owner.reports.export.excel');
 
     Route::get('/pending', [OwnerPendingPaymentController::class, 'index'])->name('owner.pending.index');
+    Route::put('/pending/settle-bulk', [OwnerPendingPaymentController::class, 'settleBulk'])->name('owner.pending.settleBulk');
     Route::put('/pending/{transaction}/settle', [OwnerPendingPaymentController::class, 'settle'])->name('owner.pending.settle');
     Route::delete('/pending/{transaction}', [OwnerPendingPaymentController::class, 'destroy'])->name('owner.pending.destroy');
 
@@ -78,6 +79,7 @@ Route::middleware(['auth', 'active', 'cashier'])->group(function () {
         ->name('cashier.transactions.show');
 
     Route::get('/cashier/pending', [CashierPendingPaymentController::class, 'index'])->name('cashier.pending.index');
+    Route::put('/cashier/pending/settle-bulk', [CashierPendingPaymentController::class, 'settleBulk'])->name('cashier.pending.settleBulk');
     Route::put('/cashier/pending/{transaction}/settle', [CashierPendingPaymentController::class, 'settle'])->name('cashier.pending.settle');
 
     Route::get('/cashier/expenses', [CashierExpenseController::class, 'index'])->name('cashier.expenses.index');

@@ -22,6 +22,7 @@ export default function CashierPendingIndex({ pending, filters }: Props) {
                     filters={filters}
                     indexRoute={route('cashier.pending.index')}
                     settleRouteName="cashier.pending.settle"
+                    bulkSettleRouteName="cashier.pending.settleBulk"
                     showCashier
                 />
             </div>

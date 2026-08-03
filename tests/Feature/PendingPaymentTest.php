@@ -152,6 +152,76 @@ describe('Settle Payment', function () {
     });
 });
 
+describe('Bulk Settle Payment', function () {
+    it('cashier settles several unpaid orders in one payment', function () {
+        $cashier = User::factory()->cashier()->create();
+        $a = Transaction::factory()->unpaid()->create(['cashier_id' => $cashier->id, 'total' => 20000]);
+        $b = Transaction::factory()->unpaid()->create(['cashier_id' => $cashier->id, 'total' => 15000]);
+
+        $this->actingAs($cashier)->put(route('cashier.pending.settleBulk'), [
+            'transaction_ids' => [$a->id, $b->id],
+            'payment_method' => 'cash',
+            'paid_amount' => 40000,
+        ])->assertRedirect();
+
+        expect($a->refresh()->payment_status)->toBe(PaymentStatus::Paid);
+        expect($b->refresh()->payment_status)->toBe(PaymentStatus::Paid);
+        expect($a->payment_method)->toBe(PaymentMethod::Cash);
+    });
+
+    it('owner settles several unpaid orders at once', function () {
+        $owner = User::factory()->owner()->create();
+        $cashier = User::factory()->cashier()->create();
+        $a = Transaction::factory()->unpaid()->create(['cashier_id' => $cashier->id, 'total' => 10000]);
+        $b = Transaction::factory()->unpaid()->create(['cashier_id' => $cashier->id, 'total' => 30000]);
+
+        $this->actingAs($owner)->put(route('owner.pending.settleBulk'), [
+            'transaction_ids' => [$a->id, $b->id],
+            'payment_method' => 'qris',
+            'paid_amount' => 40000,
+        ])->assertRedirect();
+
+        expect($a->refresh()->payment_status)->toBe(PaymentStatus::Paid);
+        expect($b->refresh()->payment_status)->toBe(PaymentStatus::Paid);
+    });
+
+    it('bulk settle ignores already-paid orders and only settles unpaid ones', function () {
+        $cashier = User::factory()->cashier()->create();
+        $unpaid = Transaction::factory()->unpaid()->create(['cashier_id' => $cashier->id, 'total' => 20000]);
+        $paid = Transaction::factory()->create(['cashier_id' => $cashier->id, 'total' => 20000]); // paid
+
+        $this->actingAs($cashier)->put(route('cashier.pending.settleBulk'), [
+            'transaction_ids' => [$unpaid->id, $paid->id],
+            'payment_method' => 'cash',
+            'paid_amount' => 40000,
+        ])->assertRedirect();
+
+        expect($unpaid->refresh()->payment_status)->toBe(PaymentStatus::Paid);
+    });
+
+    it('bulk settle requires at least one transaction id', function () {
+        $cashier = User::factory()->cashier()->create();
+
+        $this->actingAs($cashier)->from(route('cashier.pending.index'))
+            ->put(route('cashier.pending.settleBulk'), [
+                'transaction_ids' => [],
+                'payment_method' => 'cash',
+                'paid_amount' => 10000,
+            ])->assertSessionHasErrors('transaction_ids');
+    });
+
+    it('bulk settle returns 404 when none of the ids are unpaid', function () {
+        $cashier = User::factory()->cashier()->create();
+        $paid = Transaction::factory()->create(['cashier_id' => $cashier->id]); // paid
+
+        $this->actingAs($cashier)->put(route('cashier.pending.settleBulk'), [
+            'transaction_ids' => [$paid->id],
+            'payment_method' => 'cash',
+            'paid_amount' => 10000,
+        ])->assertStatus(404);
+    });
+});
+
 describe('Owner Dashboard — Pending Cards', function () {
     it('exposes pending count and value', function () {
         \Illuminate\Support\Facades\Cache::flush(); // dashboard payload is cached per day

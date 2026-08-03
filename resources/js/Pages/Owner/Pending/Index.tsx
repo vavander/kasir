@@ -22,6 +22,7 @@ export default function OwnerPendingIndex({ pending, filters }: Props) {
                     filters={filters}
                     indexRoute={route('owner.pending.index')}
                     settleRouteName="owner.pending.settle"
+                    bulkSettleRouteName="owner.pending.settleBulk"
                     showCashier
                     canDelete
                     deleteRouteName="owner.pending.destroy"
