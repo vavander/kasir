@@ -193,6 +193,8 @@ export default function Pos({ menus, categories, openTabs }: PosProps) {
                                         menu={menu}
                                         qty={cartQty(menu.id)}
                                         onAdd={() => dispatch({ type: 'ADD', menu })}
+                                        onIncrease={() => dispatch({ type: 'INCREASE', menuId: menu.id })}
+                                        onDecrease={() => dispatch({ type: 'DECREASE', menuId: menu.id })}
                                     />
                                 ))}
                             </div>
